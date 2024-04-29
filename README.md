@@ -1,1 +1,1 @@
-# dev-conf
+zsh, tmux, vim configuration
