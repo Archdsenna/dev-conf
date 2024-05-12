@@ -1,1 +1,1 @@
-zsh, tmux, vim configuration
+zsh, tmux, vim, vscode configuration
