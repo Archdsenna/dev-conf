@@ -1,0 +1,10 @@
+mac 安装 fzf
+1. 下载fzf
+$ brew install fzf
+
+2. 安装键盘映射和模糊提示
+$ $(brew --prefix)/opt/fzf/install
+
+Usage:
+    @ctrl + t : 查找文件
+    @ctrl + r : 查找历史命令
