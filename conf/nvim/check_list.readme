@@ -1,0 +1,12 @@
+Note: nvim配置迁移到本地环境完成后,通过如下清单进行自查,检查功能状态
+
+1.
+2.
+3.
+
+
+Ubuntu22.04可能遇到的问题记录
+1.   Q: nvim无法与ubuntu的系统剪贴版进行交互,checkhealth发现缺少系统剪贴板工具
+     A: 安装剪贴板工具xsel,使用如下命令
+        $  sudo apt install xsel
+

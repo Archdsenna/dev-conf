@@ -143,7 +143,7 @@
 " +----------+-------------------------------------------------------------------+
 "
 
-" vim 个性化快件键总结
+" vim 个性化快捷键总结
 " +----------+-------------------------------------------------------------------+
 " |命令      |功能                                                               |
 " +----------+-------------------------------------------------------------------+
@@ -220,7 +220,7 @@ set noeb                 " 关闭错误的提示
 syntax enable            " 开启语法高亮功能
 syntax on                " 自动语法高亮
 set t_Co=256             " 开启256色支持
-" set cmdheight=2          " 设置命令行的高度
+set cmdheight=2          " 设置命令行的高度
 set showcmd              " select模式下显示选中的行数
 set ruler                " 总是显示光标位置
 set laststatus=2         " 总是显示状态栏
@@ -1557,10 +1557,11 @@ set timeoutlen=200
 nnoremap ya :%y<CR>
 nnoremap yb :%y+<CR>
 
-" -------------------------------------                    选中整行
+" -------------------------------------                    复制光标到行尾
 " Usage:
-"       @YY : 选中整行复制到系统剪贴板
-nnoremap YY "+yy
+"       @yee : 复制光标至行尾内容到vim剪贴板
+"       @ce : 复制光标到行尾内容到系统剪贴板
+" nnoremap yes v$hcp
 
 " -------------------------------------                    反转(逆序)文本
 " Usage:
@@ -1647,10 +1648,12 @@ autocmd ModeChanged *:n,*:v silent !im-select com.apple.keylayout.ABC
 "       :map ,h
 " 3. Q: vim 如何修改原有的插件映射?
 "    A: 使用verbose map命令查看原映射对应的插件函数,然后直接把插件函数原封不动放在新的映射命令后面即可
-"       例如, 有映射如下:
+"       (1) 例如, 有映射如下:
 "               n gs <Plug>(scratch-insert-reuse)
-"       现在想修改gs,换成新的映射命令,直接将gs后面的映射函数放在新的映射命令后面即可,如下:
+"           现在想修改gs,换成新的映射命令,直接将gs后面的映射函数放在新的映射命令后面即可,如下:
 "               nnoremap ab <Plug>(scratch-insert-reuse)
+"       (2) 例如, 有映射如下:
+"               
 " 4. vim 查看全局变量的值，例如查看g:scratch_height的值:
 "       :echo g:scratch_height
 " 5. vim查看用set设置的某个选项的值, 例如查看signcolum的值:
@@ -1661,6 +1664,7 @@ autocmd ModeChanged *:n,*:v silent !im-select com.apple.keylayout.ABC
 "       :h tagbar
 " 8. 查看sign column里所有标记的信息
 "       :sign list
+" 9. Q: vim如何 
 
 
 let g:org_agenda_files=['~/org/index.org']
