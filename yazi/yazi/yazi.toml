@@ -1,0 +1,10 @@
+# 配置文本文件使用nvim打开
+[opener]
+edit = [
+	{ run = 'nvim "$@"', block = true },
+]
+
+[keybindings]
+"j" = "cursor_up"
+"k" = "cursor_down"
+

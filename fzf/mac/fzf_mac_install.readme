@@ -1,0 +1,12 @@
+Mac 安装 fzf 及其插件
+
+" -------------------------------------                    fzf
+1. 安装fzf及其依赖
+    (1) 安装fzf及主要依赖:
+        $ brew install fzf bat ripgrep the_silver_searcher perl universal-ctags
+    (2) 安装其他依赖delta:
+        地址: https://github.com/dandavison/delta
+        安装:
+            $ brew install git-delta
+        配置:
+            将dev-conf/delta/.gitconfig追加在~/.gitconfig中

@@ -1,0 +1,17 @@
+新开发环境工具安装顺序:
+    1. ssh      : 如果是需要远程接入的机器(linux), 先在远程机器上安装ssh(server版),方法见ssh_install_linux.readme
+    2. fzf      : 见
+    3. zsh      : 
+    4. neovim   : 见nvim_linux(mac)_install.readme & nvim_checklist.readme
+
+
+    Ubuntu
+        |--ssh
+        |--fzf
+        |   |-- fzf工具
+        |   |-- fzf依赖
+        |--zsh
+            |-- zsh工具
+            |-- zsh第三方插件
+                    |--zsh第三方插件依赖
+        

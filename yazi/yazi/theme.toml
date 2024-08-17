@@ -1,0 +1,68 @@
+[manager]
+cwd = { fg = "231", bg = "23" }    # 当前路径颜色
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "grey" }
+
+# 底部状态栏分隔符
+[status]
+separator_open  = ""
+separator_close = ""
+separator_style = { fg = "gray", bg = "gray" }
+
+# Permissions
+permissions_t = { fg = "green" }
+permissions_r = { fg = "yellow" }
+permissions_w = { fg = "red" }
+permissions_x = { fg = "cyan" }
+permissions_s = { fg = "darkgray" }
+
+# Mode
+mode_normal = { fg = "231", bg = "23", bold = true }
+mode_select = { fg = "231", bg = "166", bold = true }
+mode_unset  = { bg = "24", bold = true }
+
+
+[filetype]
+
+rules = [
+	# Images
+	{ mime = "image/*", fg = "yellow" },
+
+	# Media
+	{ mime = "{audio,video}/*", fg = "magenta" },
+
+	# Archives
+	{ mime = "application/{,g}zip", fg = "red" },
+	{ mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", fg = "red" },
+
+	# Documents
+	{ mime = "application/{pdf,doc,rtf,vnd.*}", fg = "cyan" },
+
+	# Empty files
+	# { mime = "inode/x-empty", fg = "red" },
+
+	# Special files
+	{ name = "*", is = "orphan", bg = "red" },
+	{ name = "*", is = "exec"  , fg = "green" },
+
+	# Fallback
+	{ name = "*", fg = "242" },
+	{ name = "*/", fg = "66" }
+]
+
+[icon]
+globs = []
+
+files = [
+]
+
+exts = [
+	{ name = "c", text = "Ⅽ", fg_dark = "#599eff", fg_light = "#3b69aa" },
+    { name = "h", text = "h", fg_dark = "#a074c4", fg_light = "#6b4d83" },
+    { name = "awk", text = " ", fg_dark = "#4d5a5e", fg_light = "#3a4446" },
+    { name = "sh", text = "󰨊", fg_dark = "#6975c4", fg_light = "#4f5893" },
+]
+
+

@@ -1,0 +1,4 @@
+Usage:
+    @vf       : 查找文件,并用vim打开
+    @ctrl + t : 查找文件
+    @ctrl + r : 查找历史命令

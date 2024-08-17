@@ -1,0 +1,39 @@
+Ubuntu 安装 fzf 及其插件 (fzf的启动在.zshrc中)
+
+" -------------------------------------                    fzf
+1. 安装fzf
+    $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    $ ~/.fzf/install
+
+2. 安装fzf的依赖
+    (1) bat 
+        作用: fzf预览高亮
+        安装:
+            $ sudo apt install bat        ：预览窗口内容高亮
+            Note: 以这种方式安装bat,可执行文件可能会安装为batcat而不是bat(由于与另一个包的名称冲突),
+                  可以设置软连接指向batcat
+            Tips: apt的版本可能不是最新的,下载最新的可以通过下载gz包,如下:
+                  最新版本地址: https://github.com/sharkdp/bat/releases
+            设置别名,.zshrc添加
+                alias bat='/usr/local/bin/bat'
+    (2) delta
+        作用: 用于 git、diff 和 grep 输出的语法高亮
+        地址: https://github.com/dandavison/delta
+        安装:
+            版本: https://github.com/dandavison/delta/releases
+            下载gz包,解压将二进制放在/usr/local/bin中
+        配置:
+            将dev-conf/delta/.gitconfig追加在~/.gitconfig中
+            
+
+
+
+fzf 第三方插件安装
+" =============================================================================
+" -------------------------------------                    fzf-tab
+作用: 增强tab功能,按tab补全的时候可以出现交互式候选项,
+      然后用tab进行选择
+1. 安装fzf-tab 
+   (1) 将此存储库克隆到zsh自定义的插件安装目录，然后将 
+       fzf-tab 添加zsh插件列表
+            $ git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab

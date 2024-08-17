@@ -1,0 +1,21 @@
+# delta的配置
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true     # 使用 n 和 N 在 diff 之间移动
+    side-by-side = true # 并排视图
+    line-numbers = true # 行号
+
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    light = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

@@ -1,0 +1,333 @@
+/*
+ * vscode 快捷键
+ * ============================================================================= 
+ * 1. 切换到目录                : Cmd + Shift + E
+ * 2. 切换tab                  : Cmd + 数字
+ * 3. 关闭编辑区                : Cmd + W
+ * 4. 在打开的标签间循环切换      : Cmd + Option + ⭢
+ * 5. 打开右键选项              : Shift + F10
+ * 6. 查看光标悬停信息           : Cmd + k + i
+ * 7. 打开/关闭侧边栏            : Cmd + b
+ * 8. 打开/关闭终端 | 光标回到终端 : Ctrl + `(注意要切换到英文输入下) (如暂时失效使用 Cmd + j)
+ * 9.光标回到第一个编辑区        : Cmd + 1
+ * 10.关闭编辑区或标签           : Cmd + w
+ * 11.打开命令面板               : Cmd + Shift + p
+ * 12.打开settings.json文件     : Ctrl + o + s (_o_pen _s_ettings.json)
+ */
+
+/*
+ * vscode 插件快捷键
+ * ============================================================================= 
+ * ------------------------------------ File Browser (适用搜索系统全部文件)
+ * Usage:
+ *      @当前文件夹下搜索文件   : alt + x 
+ * Tips: 
+*       通过在搜索框中键入 ~/ 导航到主文件夹,
+*       或通过方向键进入上级或者子文件夹
+
+ * ------------------------------------ Code Ace Jumper (位置跳转)
+ * Usage:
+ *      @快速跳转行      : alt+l (按回车键退出)
+ *      @快速跳转单词首部 : alt+w, 然后输入单词首字母
+ *                         出现位置标记字符,点击跳转
+ *                         (按回车键退出)
+ *      @快速跳转字符串  : alt+/, 然后输入字符串,出现
+ *                         位置标记字符,点击跳转(按不
+ *                         存在的键退出)
+
+ * ------------------------------------ fzf (适用在当前目录/根目录下快速搜索文件)
+ * Usage:
+ *      @ Cmd+Shift+p   : 打开命令面板，输入fzf启用
+ *                        fzf进行模糊查找
+ */
+
+ {
+    // vscode 插件配置
+    // =============================================================================
+    // ------------------------------------- vim
+    "vim.leader": "<space>",
+    "vim.timeout": 200,                                     // 组合键等待延时(200ms)
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.showMarksInGutter": true,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["<leader>", "m"],
+            "commands": [
+                "bookmarks.toggle"
+            ]
+        },
+        {
+            "before": ["<leader>", "b"],
+            "commands": [
+                "bookmarks.list"
+            ]
+        }
+    ],
+    "vim.insertModeKeyBindings": [                          // jk返回Normal模式
+            {
+                    "before": ["j", "k"],
+                    "after": ["<Esc>"]
+            }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+            {
+                "before": ["j"],
+                "after": ["k"]
+            },
+            {
+                "before": ["k"],
+                "after": ["j"]
+            },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+            {
+                    "before": ["<C-n>"],
+                    "commands": [":nohl"]
+            },
+            {
+                "before": ["j"],                            // j向上移动1行
+                "after": ["k"],
+                "silent": true
+            },
+            {
+                "before": ["<S-j>"],                        // J向上移动20行
+                "after": ["k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k", "k"]
+            },
+            {
+                "before": ["k"],                            // k向下移动1行
+                "after": ["j"]
+            },
+            {
+                "before": ["<S-k>"],                        // K向下移动20行
+                "after": ["j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j", "j"]
+            },
+            {
+                "before": ["<S-h>"],                        // H左移动5个字符
+                "after": ["h", "h", "h", "h", "h"]
+            },
+            {
+                "before": ["<S-l>"],                        // L向右移动5个字符
+                "after": ["l", "l", "l", "l", "l"]
+            },
+            {
+                    "before": ["a", "a"],                   // aa回行首
+                    "after": ["0"]
+            },
+            {
+                    "before": ["e", "e"],                   // ee回行尾
+                    "after": ["$"]
+            },
+            {
+                    "before": ["a", "i"],                   // ai在行首进入插入模式
+                    "after": ["I"]
+            },
+            {
+                    "before": ["e", "i"],                   // ei在行尾进入插入模式
+                    "after": ["A"]
+            },
+            {
+                    "before": ["s", "i"],                   // si删除光标到行尾并进入插入模式
+                    "after": ["d", "$", "a"]
+            },
+            {
+                    "before": ["d", "e", "e"],              // dee删除光标到行尾
+                    "after": ["d", "$"]
+            },
+            {
+                    "before": ["y", "e", "e"],              // yee复制光标到行尾
+                    "after": ["y", "$"]
+            },
+            {
+                    "before": ["g", "<space>"],              // g+空格:增加一个空格
+                    "after": ["i", "<space>", "<Esc>"]
+            },
+            {
+                    "before": ["d", "j"],                   // dj向上删除2行
+                    "after": ["d", "k"]
+            },
+            {
+                    "before": ["d", "k"],                   // dk向下删除2行
+                    "after": ["d", "j"]
+            },
+    ],
+    "vim.visualModeKeyBindings": [
+            {
+                "before": ["j", "k"],
+                "after": ["<Esc>"]
+            }
+    ],
+    "vim.handleKeys": {
+            "<C-a>": false,
+            "<C-f>": false
+    },
+
+    "extensions.experimental.affinity": {                   // To improve performance
+            "vscodevim.vim": 1
+    },
+
+    "vim.cursorStylePerMode.insert": "block",
+    "vim.cursorStylePerMode.normal": "block",
+    "vim.cursorStylePerMode.visual": "block",
+    "vim.cursorStylePerMode.replace": "block",
+    "vim.cursorStylePerMode.visualblock": "block",
+    "vim.cursorStylePerMode.visualline": "block",
+    "vim.autoSwitchInputMethod.enable": true,               // Normal模式下输入法自动切换为英文
+    "vim.autoSwitchInputMethod.defaultIM": "com.apple.keylayout.ABC",
+    "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
+    "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}",
+
+    // ------------------------------------- gitlens
+    "gitlens.blame.fontFamily": "Monaco",
+    "gitlens.currentLine.fontFamily": "Monaco",
+    "gitlens.codeLens.scopes": [
+        "document",
+        "containers"
+    ],
+    "gitlens.changes.locations": [
+        "gutter"
+    ],
+
+
+    // ------------------------------------- leetcode
+    "leetcode.workspaceFolder": "/Users/carrie/.leetcode",
+    "leetcode.defaultLanguage": "c",
+    "leetcode.hint.configWebviewMarkdown": false,
+
+
+    // ------------------------------------- errorLens
+    "errorLens.codeLensOnClick": "showProblemsView",        // gutter中差异修饰的宽度
+    "errorLens.fontFamily": "Monaco",
+    "errorLens.gutterEmoji": {
+        "error": "✘",
+        "warning": "⚠️",
+        "info": "⚑",
+        "hint": "➣"
+    },
+    "errorLens.gutterIconSize": "90%",
+    "errorLens.fontSize": "90%",
+    "errorLens.messageBackgroundMode": "message",
+    "errorLens.severityText": [
+        "✘",
+        "⚠️",
+        "⚑",
+        "➣"
+    ],
+    "errorLens.gutterIconSet": "emoji",
+    "errorLens.gutterIconsEnabled": true,
+    "errorLens.errorGutterIconColor": "#800000",
+
+
+    // ------------------------------------- aceJump
+    "aceJump.placeholder.backgroundColor": "#ffff87",       // 位置标记符背景色
+    "aceJump.placeholder.color": "#ff0000",                 // 位置标记符颜色
+
+
+    // vscode 配置
+    // =============================================================================
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#C4E0B6",     // 当前行高亮色
+        "editor.background": "#E2F0DA",                  // 编辑区背景色
+        "editor.fontFamily": "Monaco",
+        "terminal.background": "#E2F0DA",                // 终端背景色
+        "editor.selectionBackground": "#A8D091",         // 选中文本的背景色
+        "editorHoverWidget.background": "#E2F0DA",       // 提示栏背景色
+        "editorHoverWidget.border": "#005f00",           // 提示栏边框色
+        "list.activeSelectionBackground": "#e3eedd",     // 激活状态下的选中区域背景色
+        "list.focusBackground": "#E2F0DA",               // 焦点(鼠标)当前项背景色
+        "titleBar.activeBackground": "#E2F0DA",          // 活动窗口的标题栏背景色
+        "tab.activeBorder": "#005f00",                   // 当前活动选项卡边框
+        "tab.activeBorderTop": "#E2F0DA",                // 当前活动选项卡边框顶部
+        "breadcrumb.background": "#cbdac3",              // 编辑区文件路径一栏的背景色
+        "focusBorder": "#005f00",                        // 选中的面板边框背景色
+        "editorSuggestWidget.selectedBackground": "#e3eedd",// 自动补全列表当前项背景色
+        "badge.background": "#92aa84",                   // 终端问题提示数量背景色
+        "statusBarItem.remoteBackground": "#E2F0DA",     // 远程主机标志背景色
+        "editorLineNumber.foreground": "#b2b2b2",        // 行号
+        "editorLineNumber.activeForeground": "#000000",  // 当前行行号色
+        "editorGutter.addedBackground": "#005f00",       // gutter中新增内容的标识颜色
+        "editorGutter.modifiedBackground": "#EE9A00",    // gutter中修改内容的标识颜色
+        "editorGutter.deletedBackground": "#af0000",     // gutter中删除内容的标识颜色
+        // ------------------------------------- statusbar 状态栏
+        // "statusBar.background": "#ff0000",
+        // "statusBar.noFolderBackground": "#8FBCBB",       // 没打开文件夹时的状态栏颜色
+        // "statusBar.debuggingBackground": "#8FBCBB",
+        // "statusBar.foreground": "#434C5E",
+        // "statusBar.debuggingForeground": "#434C5E"
+        // ------------------------------------- 光标颜色
+        "editorCursor.foreground": "#FD9829",
+        "terminalCursor.foreground": "#FD9829",
+    },
+    "workbench.colorTheme": "GitHub Light Default",         // 主题：GitHub亮模式
+    "workbench.iconTheme": "vscode-icons-mac",              // mac主题图标
+    "git.openRepositoryInParentFolders": "always",
+    "editor.fontSize": 15,                                  // 编辑区字体大小
+    "editor.fontFamily": "Monaco",                          // 编辑区字体
+    "terminal.integrated.fontSize": 15,                     // 终端字体大小
+    "terminal.integrated.scrollback": 5000,
+    "terminal.integrated.fontFamily": "Monaco",
+    "workbench.activityBar.location": "top",
+    "editor.detectIndentation": false,                      // 关闭智能检测缩进，不关会覆盖tab的自定义设置
+    "editor.tabSize": 4,                                    // tab等于4个空格
+    "editor.insertSpaces": true,                            // 插入缩进时，是否使用空格来代替制表符。将其设置为true表示插入空格，设置为false表示插入制表符
+    "[c]": {
+            "editor.tabSize": 8,                            // c缩进8个空格
+    },
+    "[python]": {
+            "editor.tabSize": 4,                            // python缩进4个空格
+    },
+    "[rust]": {
+            "editor.tabSize": 4,                            // rust缩进4个空格
+    },
+    "[go]": {
+            "editor.tabSize": 4,                            // go缩进4个空格
+    },
+    "files.autoSave": "afterDelay",                         // 文件自动保存
+    "files.autoSaveDelay": 100,
+    "window.newWindowDimensions": "fullscreen",
+    "workbench.startupEditor": "none",
+    "editor.accessibilitySupport": "on",
+    "editor.tabCompletion": "on",
+    "editor.cursorSurroundingLines": 17,                    // 滚动时保持当前行在屏幕中间
+    "window.zoomLevel": 2.5,                                // 放大比例。主要用于调整侧边栏字体，设置后编辑区字体
+                                                            // 也会等比例放大，可以修改editor.fontSize进行调整
+    "debug.console.fontFamily": "Monaco",                   // 调试控制台中的字体
+
+    "window.openFoldersInNewWindow": "on",
+    "markdown.preview.fontFamily": "Monaco",
+    "markdown.preview.fontSize": 14,
+    "workbench.editor.editorActionsLocation": "titleBar",
+    "scm.inputFontFamily": "Monaco",
+    "editor.inlayHints.fontFamily": "Monaco",
+    "notebook.output.fontFamily": "Monaco",
+    "editor.codeLensFontFamily": "Monaco",
+    "editor.experimentalInlineEdit.fontFamily": "Monaco",
+    "editor.inlineSuggest.fontFamily": "Monaco",
+    "chat.editor.fontFamily": "Monaco",
+    "workbench.tree.renderIndentGuides": "none",            // 关闭左侧目录中的参考线
+    "editor.guides.indentation": false,                     // 关闭编辑区中的参考线
+    "editor.renderLineHighlight": "all",                    // 当前行号与当前行背景色一致
+    "editor.minimap.enabled": false,                        // 隐藏小地图
+    "editor.scrollbar.vertical": "hidden",                  // 隐藏编辑区垂直滚动条
+    "editor.scrollbar.horizontal": "hidden",                // 隐藏编辑区水平滚动条
+    "editor.scrollbar.verticalScrollbarSize": 0,            // 垂直滚动条宽度为0
+    "editor.scrollbar.horizontalScrollbarSize": 0,          // 水平滚动条宽度为0
+    "terminal.integrated.cursorWidth": 2,                   // 终端光标宽度
+    "terminal.integrated.cursorBlinking": false,            // 终端光标不闪烁
+    "terminal.integrated.tabs.enabled": false,              // 关闭终端右侧显示终端选项卡
+    "terminal.integrated.cursorStyleInactive": "block",     // 失去焦点时终端光标样式
+    "terminal.integrated.copyOnSelection": true,            // 将在终端中选定的文本复制到剪贴板
+    "editor.cursorWidth": 2,
+    "scm.diffDecorationsGutterPattern": {
+        "added": true
+    },
+    "diffEditor.codeLens": true,
+    "scm.diffDecorations": "gutter",
+    "scm.diffDecorationsGutterWidth": 5,
+    "editor.cursorStyle": "block",
+    "editor.cursorBlinking": "solid",                       // 编辑区光标不闪烁
+}

@@ -1,0 +1,19 @@
+nvim 在 linux 的配置过程:
+    1. 安装neovim
+    2. clone dev-conf仓库
+        $ git clone https://github.com/Archdsenna/dev-conf.git
+    3. 将dev-conf/neovim/的nvim目录直接拷贝到~/.config/目录下即可
+        $ cp nvim ~/.config/
+
+linux 安装 nvim 及其依赖
+" =============================================================================
+" -------------------------------------                    nvim
+1. 安装
+    $ sudo apt update
+    $ sudo apt install neovim
+
+" -------------------------------------                    xsel剪贴板工具(vim-systemy-copy的依赖)
+   Q: nvim无法与ubuntu的系统剪贴版进行交互,checkhealth发现
+      缺少系统剪贴板工具
+   A: 安装剪贴板工具xsel,使用如下命令
+      $  sudo apt install xsel

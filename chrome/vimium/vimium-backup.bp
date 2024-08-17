@@ -1,0 +1,72 @@
+# Insert your preferred key mappings here.
+# Insert your preferred key mappings here.
+map j scrollUp
+map k scrollDown
+map J scrollPageUp
+map K scrollPageDown
+map <Space>j previousTab
+map <Space>k nextTab
+map w removeTab
+map R restoreTab
+map W moveTabToNewWindow
+map i focusInput
+map <Space>t togglePinTab
+map at firstTab
+map et lastTab
+map <Space>h moveTabLeft
+map <Space>l moveTabRight
+map eh scrollToLeft
+map el scrollToRight
+map d LinkHints.activateModeToDownloadLink
+
+
+div > .vimiumHintMarker {
+/* linkhint boxes */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),
+  color-stop(100%,#FFC542));
+border: 1px solid #E3BE23;
+}
+
+div > .vimiumHintMarker span {
+/* linkhint text */
+color: black;
+font-weight: bold;
+font-family: Monaco;
+font-size: 3px;
+}
+
+div > .vimiumHintMarker > .matchingCharacter {
+}
+
+#vomnibar {
+  background: #E2F0DA;
+}
+
+
+#vomnibar .vomnibarSearchArea,
+#vomnibar input {
+  background: #e2eddb;
+  font-family: Monaco;
+  font-weight: bold;
+}
+
+#vomnibar ul {
+  background: #E2F0DA;
+  font-family: Monaco;
+}
+
+#vomnibar li.vomnibarSelected {
+  background-color: #AED6B0;
+  font-family: Monaco;
+  font-weight: bold;
+}
+
+#vomnibar li.vomnibarSelected .vomnibarMatch {
+  color: #ffff87;
+  font-weight: bold;
+}
+
+#vomnibar li .vomnibarMatch {
+  color: #af0000;
+  font-weight: bold;
+}

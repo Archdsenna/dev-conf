@@ -1,0 +1,10 @@
+1. vscode 安装 shell command
+    作用: 可以在shell中用code表示vscode,例如使用命令which code,或者
+          也可以在命令行启动vscode,直接在终端中输入code即可启动vscode
+    方法: Cmd+Shift+p打开vscode命令面板,然后输入shell command
+          查找 Shell Command: Install ‘code’ command in PATH command安装
+
+2. mac vscode修改状态栏样式为vim状态栏样式          
+    Note: css文件来源: https://github.com/pcwalton/vscode-powerline 
+    方法: 将dev-conf/vscode/css目录下的vscode-vim-statusbar.css文件的内容追加在下面文件的最后(修改前记得备份原来的文件为name.bak):
+            /Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.css (only for mac)
