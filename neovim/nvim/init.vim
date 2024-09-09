@@ -14,6 +14,8 @@
 
 " vim 名词(表示待编辑的文本对象)
 " +----------+----------+--------------------------------------------------------+
+" |h/l       |char      |一个字符(左/右侧)                                       |
+" +----------+----------+--------------------------------------------------------+
 " |w         |world     |一个单词                                                |
 " +----------+----------+--------------------------------------------------------+
 " |s         |sentence  |一个句子(以英文'.'结束作为一个句子)                     |
@@ -42,7 +44,15 @@
 " +----------+-------------------------------------------------------------------+
 " |;         |重复执行上一次光标移动                                             |
 " +----------+-------------------------------------------------------------------+
-" |'(原,命令)|反方向重复执行上一次光标移动                                       |
+" |,         |反方向重复执行上一次光标移动(已自定义映射为;;)                     |
+" +----------+-------------------------------------------------------------------+
+"
+
+" vim 选择缩进
+" +----------+-------------------------------------------------------------------+
+" |shift + < |向左缩进,在要对齐的地方按Ctrl+v标记位置,然后按Shift+<左缩进到该位置|
+" +----------+-------------------------------------------------------------------+
+" |shift + > |向右缩进,按Ctrl+v选中要缩进的行,然后按Shift+>向右缩进              |
 " +----------+-------------------------------------------------------------------+
 "
 
@@ -50,11 +60,17 @@
 " +----------+-------------------------------------------------------------------+
 " |C         |删除光标到行尾的内容,并进入插入模式                                |
 " +----------+-------------------------------------------------------------------+
-" |dw        |删除光标后的单词及其后空格, d2w:删除2个单词及其后空格              |
+" |dw        |删除光标后的单词及其后空格, d2w:删除2个单词及每个单词后空格        |
 " +----------+-------------------------------------------------------------------+
-" |diw       |删除光标所在位置的单词, 不删除其后空格                             |                                              
+" |diw       |删除光标所在位置的单词, 不删除其后空格                             |
 " +----------+-------------------------------------------------------------------+
-" |de        |删除光标到单词尾的所有内容                                         |
+" |daw       |删除光标所在位置的单词, 及其后空格,d2aw:删除2个单词及每个单词后空格|
+" +----------+-------------------------------------------------------------------+
+" |di{       |删除{}内的内容(其他括号同理)                                       |
+" +----------+-------------------------------------------------------------------+
+" |da{       |删除{},及括号内的内容                                              |
+" +----------+-------------------------------------------------------------------+
+" |de        |删除光标到单词尾的内容(不包含单词后空格)    Tips: w带空格,e不带空格|
 " +----------+-------------------------------------------------------------------+
 " |dj / dk   |删除光标行+上/下一行                                               |
 " +----------+-------------------------------------------------------------------+
@@ -110,11 +126,11 @@
 " +----------+-------------------------------------------------------------------+
 "
 
-" vim 命令快捷键总结 : 功能自上而下依次为[插入|删除|替换|剪切|复制|选中|撤销|移动]
+" vim 命令快捷键总结 : 功能自上而下依次为[插入|删除|替换|剪切|复制|粘贴|选中|撤销|移动]
 " +----------+-------------------------------------------------------------------+
 " |命令      |功能                                                               |
 " +----------+-------------------------------------------------------------------+
-" |a         |在当前字符后, 进入[插入]模式                                       |
+" |a         |在当前字符后, 进入[插入]模式              6ax: 在当前字符后插入6个x|
 " +----------+-------------------------------------------------------------------+
 " |A         |在当前行尾，进入[插入]模式                                         |
 " +----------+-------------------------------------------------------------------+
@@ -122,13 +138,13 @@
 " +----------+-------------------------------------------------------------------+
 " |O         |在上一行, 进入插入模式                                             |
 " +----------+-------------------------------------------------------------------+
-" |i         |在当前位置, 进入插入模式                                           |
+" |i         |在当前位置, 进入插入模式                      6ix: 在光标处插入6个x|
 " +----------+-------------------------------------------------------------------+
 " |I         |在当前行行首, 进入插入模式                                         |
 " +----------+-------------------------------------------------------------------+
-" |s         |删除当前字符, 进入插入模式(2s,删除光变后2个字符并进入插入模式)     |
+" |s         |清空当前字符, 进入插入模式(2s,删除光变后2个字符并进入插入模式)     |
 " +----------+-------------------------------------------------------------------+
-" |S         |删除当前行，进入插入模式(与cc效果相同)                             |
+" |S         |清空当前行, 进入插入模式(与cc效果相同)                             |
 " +----------+-------------------------------------------------------------------+
 " |x         |删除光标后的1个字符(不进入任何模式), 3x: 删除光标后的3个字符       |
 " +----------+-------------------------------------------------------------------+
@@ -142,13 +158,17 @@
 " +----------+-------------------------------------------------------------------+
 " |D         |剪切从当前光标位置到本行末尾的所有字符                             |
 " +----------+-------------------------------------------------------------------+
-" |Y         |复制整行                                                           |
+" |Y         |复制整行(等同yy)                                                   |
+" +----------+-------------------------------------------------------------------+
+" |p         |在当前行下方粘贴, 6p:粘贴6行                                       |
+" +----------+-------------------------------------------------------------------+
+" |P         |在当前行上方粘贴                                                   |
 " +----------+-------------------------------------------------------------------+
 " |V         |进入可视行模式,可以按行选中文本                                    |
 " +----------+-------------------------------------------------------------------+
 " |ctrl+v    |进入可视块模式,可以选择多行中的相同列                              |
 " +----------+-------------------------------------------------------------------+
-" |u / Ctrl+r|撤销修改/恢复修改                                                  |
+" |u / Ctrl+r|撤销修改/恢复修改(Ctrl+r已自定义映射为rr)                          |
 " +----------+-------------------------------------------------------------------+
 " |b         |向左按单词移动                                                     |
 " +----------+-------------------------------------------------------------------+
@@ -202,15 +222,15 @@
 " +----------+-------------------------------------------------------------------+
 " |ej / ek   |在上/下一行末尾进入插入模式                                        |
 " +----------+-------------------------------------------------------------------+
-" |aj / ak   |在上/下一行开头进入插入模式                                        |
+" |hj / hk   |在上/下一行开头进入插入模式, h=head                                |
 " +----------+-------------------------------------------------------------------+
 " |cj / ck   |删除上/下一行(光标保持在当前行)                                    |
 " +----------+-------------------------------------------------------------------+
 " |sj / sk   |清空上/下一行内容(光标保持在当前行)                                |
 " +----------+-------------------------------------------------------------------+
-" |fw        |写入当前修改内容(等价:w,wh=write fixed,即写入确定)                 |
+" |ew        |写入当前修改内容(等价":w", ew=ensure write, 即确定写入)            |
 " +----------+-------------------------------------------------------------------+
-" |wf        |保存并退出 (fw=fixed write,确定写入)                               |
+" |we        |保存并退出 (we=write exit, 写入后退出)                             |
 " +----------+-------------------------------------------------------------------+
 " |si        |清除光标到行尾内容,并进入插入模式(光标为删除前的位置)              |
 " +----------+-------------------------------------------------------------------+
@@ -224,9 +244,9 @@
 " +----------+-------------------------------------------------------------------+
 " |vm / vn   |垂直分屏增大/减小                                                  |
 " +----------+-------------------------------------------------------------------+
-" |vh        |2个垂直分屏转水平分屏                                              |
+" |vh        |2个垂直分屏转水平分屏(自定义映射wh/wl也可以)                       |
 " +----------+-------------------------------------------------------------------+
-" |hv        |2个水平分屏转垂直分屏                                              |
+" |hv        |2个水平分屏转垂直分屏(自定义映射wj/wk也可以)                       |
 " +----------+-------------------------------------------------------------------+
 " |wh/wj/wk/wl|当前分屏左/上/右/下移                                             |
 " +----------+-------------------------------------------------------------------+
@@ -234,9 +254,11 @@
 " +----------+-------------------------------------------------------------------+
 " |et        |同时开启行列高亮                                                   |
 " +----------+-------------------------------------------------------------------+
-" |er        |退出当前buffer                                                     |
+" |eu        |退出当前buffer, eu=exit b'u'ffer                                   |
 " +----------+-------------------------------------------------------------------+
-" |bl        |显示buffer列表,按Enter跳转,按c关闭,按Tab多选                       |
+" |bl        |显示buffer列表,按Enter跳转,按c关闭,按Tab多选      (bl=buffer list) |
+" +----------+-------------------------------------------------------------------+
+" |bj        |显示buffer列表,为每个buffer显示位置字符,按字符跳转(bj=buffer jump) |
 " +----------+-------------------------------------------------------------------+
 " |wr        |恢复上次窗口布局                                                   |
 " +----------+-------------------------------------------------------------------+
@@ -246,10 +268,31 @@
 " +----------+-------------------------------------------------------------------+
 " |md        |进入vim命令行模式                                                  |
 " +----------+-------------------------------------------------------------------+
-" |nr        |文件重命名                                                         |
-" +----------+-------------------------------------------------------------------+
 " |lr        |返回上一次光标所在行                                               |
 " +----------+-------------------------------------------------------------------+
+" |aj / ak   |光标跳转到上/下一个历史编辑位置,a=at                               |
+" +----------+-------------------------------------------------------------------+
+" |bn        |新建无文件缓冲区并命名,bn=buffer new                               |
+" +----------+-------------------------------------------------------------------+
+" |hf        |无文件缓冲区保存为文件,hf=hold file, hold=保存                     |
+" +----------+-------------------------------------------------------------------+
+" |er        |无文件缓冲区重命名                                                 |
+" +----------+-------------------------------------------------------------------+
+" |re        |对已存在的文件重命名, re=rename                                    |
+" +----------+-------------------------------------------------------------------+
+" |cl        |清空命令行显示的消息                                               |
+" +----------+-------------------------------------------------------------------+
+" |go        |在上方 [ 上方无空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  |
+" +----------+-------------------------------------------------------------------+
+" |gu        |在下方 [ 下方无空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  |
+" +----------+-------------------------------------------------------------------+
+" |ao        |在上方 [ 上方有空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  |
+" +----------+-------------------------------------------------------------------+
+" |bo        |在下方 [ 下方有空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  |
+" +----------+-------------------------------------------------------------------+
+" |bm        |跳转到匹配的括号(需将光标置于括号上), bm=bracket match             |
+" +----------+-------------------------------------------------------------------+
+" 
 
 " 命令助记规则表(todo: 把所有命令都补充上)
 " +-----------------------------------+------------------------------------+--------------------------------------+-----------------+
@@ -285,10 +328,10 @@
 "       $ brew install python3
 "   2. 安装nvim自带的python支持
 "       2.1 因为mac不允许直接通过pip方式下载python组件以防止损坏系统环境,所以通过python的虚拟环境完成下载,如下:
-"           $ python3 -m venv ~/.venv       // 创建一个python虚拟环境
-"           $ source ~/.venv/bin/activate   // 激活虚拟环境
-"           $ python3 -m pip install neovim // 下载nvim的python支持
-"           $ which python3                 // 在虚拟环境中查看python3的安装路径
+"           $ python3 -m venv ~/.venv           " 创建一个python虚拟环境
+"           $ source ~/.venv/bin/activate       " 激活虚拟环境
+"           $ python3 -m pip install neovim     " 下载nvim的python支持
+"           $ which python3                     " 在虚拟环境中查看python3的安装路径
 "           $ 在init.vim中将python3安装路径赋值给g:python3_host_prog变量
 let g:python3_host_prog = '~/.venv/bin/python3'
 
@@ -362,7 +405,7 @@ set smartcase            " 智能大小写搜索
 set background=light
 
 
-" vim 插件列表
+" vim 插件列表(外部插件)
 " =============================================================================
 call plug#begin('~/.config/nvim/plugged') " 设置nvim下vim-plug下载插件的路径
 " -------------------------------------                                 git 相关
@@ -408,10 +451,11 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
                                    " 具体的语法树,并在源文件编辑时有效
                                    " 地更新语法树)
 Plug 'nvim-treesitter/nvim-treesitter-textobjects' 
-                                   " 为nvim提供基于语义的文本对象
+                                   " 使用treesitter处理textobjects对象
 Plug 'nvim-treesitter/nvim-treesitter-context' 
-                                   " 顶部显示当前在所在的函数、类等代码
-                                   " 数据信息
+                                   " 基于treesitter 语法树来显示代码的
+                                   " 上下文信息(在顶部显示当前在所在的
+                                   " 函数、类等代码数据信息
 
 " -------------------------------------                                 文件管理
 Plug 'preservim/nerdtree'          " 显示文件目录列表
@@ -476,23 +520,94 @@ Plug 'AndrewRadev/bufferize.vim'   " 在新buffer中显示命令的输出结果,
                                    " 可对输出结果进行复制
 
 " -------------------------------------                                 窗口管理
-Plug 'dstein64/vim-win'            " 显示窗口编号并h/j/k/l移动
+Plug 'dstein64/vim-win'            " 显示窗口编号并h/j/k/l切换窗口
 
 " -------------------------------------                                 其他优化插件
 Plug 'tpope/vim-repeat'            " 使用.重复上次的插件操作(未起作用)
 Plug 'voldikss/vim-floaterm'       " 支持在vim上悬浮终端窗口
 Plug 'mbbill/undotree'             " 以列表显示vim撤回了哪些修改
                                    " 以及修改的内容 
-Plug 'chrisbra/NrrwRgn'            " 将注意力集中在一个选定的区域内，暂
+Plug 'chrisbra/NrrwRgn'            " 将注意力集中在一个选定的区域内,暂
                                    " 时隐藏其余部分
 " Plug 'kien/rainbow_parentheses.vim' " 括号对彩色高亮(默认不开启)
 Plug 'mhinz/vim-startify'          " vim启动界面,显示会话列表&历史文件
 Plug 'dstein64/vim-startuptime'    " 显示vim启动时间
 
-Plug 'tpope/vim-rsi'
-
 call plug#end()
 
+" vim 插件列表(内置插件)
+" =============================================================================
+" -------------------------------------                    vim查看man手册
+" Note: Man手册结构
+"       第1章: 用户命令(可执行程序和shell命令)
+"       第2章：系统调用
+"       第3章：C库函数
+"       第4章：特殊文件(通常是/dev中的设备)和驱动
+"       第5章：文件格式和约定
+"       第6章：游戏等
+"       第7章：杂项(包括宏包和约定,例如man(7), groff(7))
+"       第8章：系统管理命令和守护进程
+"       第9章: 内核例程(非标准)
+" Usage:
+"       @an  : (默认)右侧垂直分屏打开man页面。按an后, 会
+"              调用:ManOpen命令(自定义命令,原命令为:Man),
+"              在ManOpen后输入要查看的内容名字
+"       @am  : 全屏模式打开man页面,m=max
+"       @Tab : man页面中,在当前光标下单词按Tab,在新buffer
+"              显示该单词对应的man页面,如不存在则显示错误
+
+runtime ftplugin/man.vim
+
+" Tips: 命令行的映射不需要加<silent>,否则按下映射键后命令行不会立即显示
+nnoremap an :ManOpen 
+nnoremap am :ManOpenOnly 
+
+" 定义一个新命令, 以右侧垂直分屏模式打开 Man 页面(默认打开man页面的方式)
+command! -nargs=+ ManOpen vertical rightbelow Man <args> 
+" 定义一个新命令, 以全屏模式打开 Man 页面
+command! -nargs=+ ManOpenOnly vertical rightbelow Man <args> | bd # | only
+
+function! ManOpenTab(manPage) abort
+    " 尝试打开man页面，捕获可能的错误信息
+    redir => l:output
+    silent! execute 'Man ' . a:manPage
+    redir END
+
+    " 如果man手册不存在该条目,则抛出错误信息
+    if l:output =~ 'no manual entry'
+        echohl ErrorMsg
+        echo 'No man entry for ' . a:manPage
+        echohl None
+    else
+        " 如果man页面存在，配置窗口打开方式
+        " silent! execute 'vsp | Man ' . a:manPage . ' | only'
+        execute 'ManOpen' a:manPage
+        echo ""
+    endif
+endfunction
+
+" Tips: 使用自动命令组的好处
+"       使用augroup来定义一组针对 man 文件类型的设置和映射。这样做的好处是,
+"       每次这个组被重新加载时(比如重新加载配置文件),autocmd! 会首先清除之
+"       前的设置, 然后重新应用新的设置, 确保设置不会重复叠加
+augroup ManKeyBindings
+    autocmd!
+    " 在查看 Man 页面时,按j向上,k向下
+    autocmd FileType man nnoremap <buffer> j k
+    autocmd FileType man nnoremap <buffer> k j
+    " 在查看 Man 页面时自动显示行号
+    autocmd FileType man setlocal number
+    " 禁止折行
+    autocmd FileType man setlocal nowrap
+    " Tips: bufhidden选项决定了当buffer不再显示在任何窗口时Vim应该如何处理它。
+    "       设置为hide表示当buffer被隐藏(例如, 切换到另一个buffer)时, 它不会
+    "       被自动卸载, 其内容会被保留在内存中。这样, 当再次切换回这个buffer
+    "       时, 它会立即显示, 而不需要重新加载内容。这种设置特别适用于那些加
+    "       载内容需要较长时间或者你希望保持 buffer 状态的场景
+    autocmd FileType man setlocal bufhidden=hide    " 缓存内容并禁止在切换时重新加载
+    " 当文件类型是man时,将Tab键映射到:Man命令,按Tab查看当前光标下单词的man页面
+    autocmd FileType man nnoremap <silent> <buffer> <Tab> :call ManOpenTab(expand("<cword>"))<CR>
+augroup END
 
 " vim 插件配置
 " =============================================================================
@@ -606,7 +721,7 @@ function! GitGutterNextHunkCycle()
 endfunction
 " 按'nk'在修改块间循环跳转(仅对当前buffer)
 nmap <silent> nk :call GitGutterNextHunkCycle()<CR>
-"                 Tips: nk=_n_ext hun_k_
+"                 Tips: nk='n'ext hun'k'
 
 " -------------------------------------                    nerdtree
 " Usage:
@@ -738,8 +853,8 @@ highlight NERDTreeFlags ctermfg=22      " git 状态的[ ]颜色
 " -------------------------------------                    airline
 " Usage:
 "       @空格+数字 : 切换到数字对应的buffer
-"       @th        : 切换到上一个buffer(递减buffer编号)
-"       @tl        : 切换到下一个buffer(递增buffer编号)
+"       @ah        : 切换到上一个buffer(递减buffer编号)
+"       @al        : 切换到下一个buffer(递增buffer编号)
 "                    Tips: 助记,t=tab
 " Note:
 "     Vim 状态栏(trailing、mixed-indent、mix-indent-file)的含义:
@@ -771,9 +886,24 @@ let g:airline#extensions#fzf#enabled = 1        " fzf扩展[暂没明确作用]
 
 let g:airline_symbols.branch = '⎇ '             " git分支图标
 let g:airline_symbols.readonly = '🔒'           " 只读文件标记
-let g:airline_symbols.colnr = '❯'               " 列符号
-let g:airline_symbols.linenr = ' ❯'             " 行符号
-let g:airline_symbols.maxlinenr = '🏁 '         " 行总数标记
+let g:airline_symbols.colnr = ''                " 列符号
+let g:airline_symbols.linenr = ' '              " 行符号
+let g:airline_symbols.maxlinenr = ' '           " 行总数标记
+
+let g:airline#extensions#whitespace#show_message = 1
+let g:airline#extensions#whitespace#checks =
+   \  [ 'conflicts', 'trailing', 'mixed-indent-file' ]
+
+" 在版本控制过程中,如果文件存在合并冲突,状态栏中
+" 以 [数目]C 的格式显示
+let g:airline#extensions#whitespace#conflicts_format = '[%s]C ' " 合并冲突的显示格式,C=conflicts
+
+let g:airline_symbols.whitespace = ''           " 尾部空白标志
+let g:airline#extensions#whitespace#trailing_format = '[%s]TS ' " 尾部空白格式:[数目]TS, TS=Trailing Space
+
+" 文件存在混合缩进显示格式, 混合缩进是指在同一文件中同时使用空格和制表符进行缩进,
+let g:airline#extensions#whitespace#mixed_indent_file_format =
+   \ '[%s]X'  " X=mixed-indent-file             " 混合缩进显示格式: [范围]X
 
 " 开启buffer编号显示，按数字1、2等切换buffer,按-/+来递减/递增buffer
 let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -786,8 +916,8 @@ nmap <Space>6 <Plug>AirlineSelectTab6
 nmap <Space>7 <Plug>AirlineSelectTab7
 nmap <Space>8 <Plug>AirlineSelectTab8
 nmap <Space>9 <Plug>AirlineSelectTab9
-nnoremap <silent> th <Plug>AirlineSelectPrevTab
-nnoremap <silent> tl <Plug>AirlineSelectNextTab
+nnoremap <silent> ah <Plug>AirlineSelectPrevTab
+nnoremap <silent> al <Plug>AirlineSelectNextTab
 " buffer编号样式
 let g:airline#extensions#tabline#buffer_idx_format = {
         \ '0': '⓿ ',
@@ -872,7 +1002,6 @@ highlight TagbarAccessPrivate ctermfg=1
 "                 Tips: 空格+d会显示历史命令,选中命令后,直接Enter会执行该命令,如果
 "                       想在该命令的基础上进行修改,可以按Ctrl+e,命令会被复制到命令
 "                       行,可以在此基础上继续编辑
-"       @空格+t : 显示Tabs列表
 "       @ctrl+j/k: 列表中向上/下选择
        
 " 打开文件搜索列表,默认显示当前目录文件。查找指定路径可给Files函数传入路径参数，例如 :Files path, 命令助记(f = _f_iles)
@@ -894,8 +1023,6 @@ set diffopt+=vertical
 nnoremap <silent> <Space>e :History<cr> 
 " 列表显示之前使用的命令, 包括vim函数或系统命令, 命令助记(d = comman_d_)
 nnoremap <silent> <Space>d :History:<cr>
-" 显示Tabs列表
-" nnoremap <silent> <Space>t :Windows<CR>
 
 " 设置fzf窗口的高度和宽度
 let g:fzf_layout = { 'window': { 'height': 1.0, 'width': 1.0 } }
@@ -939,11 +1066,11 @@ nnoremap <C-s> :<C-u>call gitblame#echo()<CR>
 
 " -------------------------------------                    vim-floaterm
 " Usage:
-"       @空格 + s : 在vim上打开悬浮终端窗口,再按一下隐藏
-"                   Tips: 助记: s=shell, 即终端shell
+"       @空格 + t : 在vim上打开悬浮终端窗口,再按一下隐藏
+"                   Tips: 助记: t=terminal, 即终端
 "       @空格 + y : 打开yazi文件管理器浮动窗口
 " 在vim上打开悬浮终端       
-let g:floaterm_keymap_toggle = '<Space>s'
+let g:floaterm_keymap_toggle = '<Space>t'
 let g:floaterm_width = 1.00
 let g:floaterm_height = 1.02
 let g:floaterm_opener='edit'    " 从yazi打开文件时从当前buffer打开(默认会用水平分割窗口打开文件)
@@ -980,6 +1107,12 @@ endfunction
 noremap <silent> <C-g> :call GrepAndSwitch()<cr>
 
 " -------------------------------------                    undotree
+" Note: undotree标志含义
+"       (1) 当前状态标记为> number <
+"       (2) 将通过:redo或<ctrl-r>恢复的下一个状态标记为{ number }
+"       (3) [ number ]标记最近的更改
+"       (4) 保存的更改标记为s ，大S表示最近保存的更改
+
 " Usage:
 "       @空格+u : 打开撤销操作列表
 nnoremap <silent> <Space>u :UndotreeToggle<CR>       
@@ -997,7 +1130,8 @@ let g:undotree_SplitWidth = 25          " undo左侧面板宽度
 "       @NRV    : 打开上次可视选择的区域的缩小窗口
 "       @WR     : 将专注区的修改写回原始区，但不关闭专注窗口
 
-vnoremap <silent> mn :NR<CR>                    " mn 打开专注窗口                          
+" mn 打开专注窗口                          
+vnoremap <silent> mn :NR<CR>                    
 
 "let g:nrrw_rgn_vert = 1                        " 垂直方式打开专注窗口
 let g:nrrw_rgn_resize_window = 'relative'       " 通过百分比的方式设置专注窗口的尺寸
@@ -1078,10 +1212,10 @@ map <Leader>. <Plug>(easymotion-repeat)
 
 let g:EasyMotion_smartcase = 1          " 设置此选项后, v 将匹配 v 和 V ，但 V 将仅匹配 V
 
-hi EasyMotionTarget cterm=bold ctermbg=228 ctermfg=red         " 单字位置标识
-hi EasyMotionTarget2First cterm=bold ctermbg=228 ctermfg=166   " 双字位置标识第1字
-hi EasyMotionTarget2Second cterm=bold ctermbg=228 ctermfg=166  " 双字位置标识第2字
-hi EasyMotionIncSearch cterm=bold ctermbg=228 ctermfg=red      " 搜索模式下匹配的文本颜色
+hi EasyMotionTarget ctermbg=228 ctermfg=red         " 单字位置标识
+hi EasyMotionTarget2First ctermbg=228 ctermfg=166   " 双字位置标识第1字
+hi EasyMotionTarget2Second ctermbg=228 ctermfg=166  " 双字位置标识第2字
+hi EasyMotionIncSearch ctermbg=228 ctermfg=red      " 搜索模式下匹配的文本颜色
 hi EasyMotionIncCursor cterm=bold ctermbg=202                  " 搜索模式下光标颜色
 
 " -------------------------------------                    vim-system-copy
@@ -1114,18 +1248,24 @@ map tt :Linediff<CR>
 
 " -------------------------------------                    vim-signature
 " Usage:
-"   @mx              : 在当前行添加一个标签'x'(每行可打2个标记符号)
+"   @ma              : 在当前行添加一个标签'a'(每行最多可打2个标记符号)
+"                      [⚠️ ]Note: 如果要设置标记d, 不能连按md,先按下m, 
+"                                停顿下再按d,即可设置, d标志(md已映射
+"                                为进入命令行模式的命令":")
+"   @'a              : 跳转到标记为a的行
 "   @m,              : 放置下一个可用标记
 "   @cmx       (原dm): 删除标签'x'
 "   @dm        (原m-): 删除当前行所有标记
 "   @m + 空格        : 删除当前缓冲区的所有标记
-"   @m/              : 打开位置列表(quickfix)并显示当前缓冲区的所有标记
+"   @m/              : 打开位置列表(quickfix)并显示当前缓冲区
+"                      的所有标记,同时显示位置字符
 " Note: 这个插件的标记是以行为准打的,所以如果标记的位置如果有行变动(行增/行减),
 "       则之前在该位置打的标记则可能会变动
 " Tips:
 "   1. 命令助记, m 表示mark
 hi SignatureMarkText cterm=bold ctermfg=88  " mark字符标记颜色
 
+nnoremap m/ :<C-U>call signature#mark#List(0, 0)<CR><Plug>(easymotion-j)
 
 
 " 重新映射原插件命令:
@@ -1294,6 +1434,10 @@ map M :vertical botright Bufferize
 "       @>      : 到下一个错误
 "       @Tab键  : 悬浮方式显示信息(例如函数原型信息)
 "       @cn     : 快速更改变量名或符号,并自动更新所有相关引用
+"       @gd     : 跳转到定义
+"                 Tips: 按下gd的间隔时间决定打开方式
+"                       (1) gd连按(gd连续按下,中间无停顿),在右侧垂直分屏打开定义
+"                       (2) gd隔按(先按g,停顿后按d),在当前buffer打开定义
 " Tips: coc命令
 "       @:CocList extensions : 查看已安装的lsp
 "                              Note: CocList extensions 命令用来显示所有已安装的扩展列表。
@@ -1333,7 +1477,7 @@ nmap <silent> < <Plug>(coc-diagnostic-prev)
 nmap <silent> > <Plug>(coc-diagnostic-next)
 
 " 转到定义(包括函数或变量)
-nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)       
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -1383,6 +1527,37 @@ hi CocErrorFloat ctermfg=1
 hi CocFloating cterm=NONE ctermfg=66 ctermbg=194       " coc浮动窗口内文字颜色
 " hi CocMenuSel ctermfg=23 ctermbg=150       " 列表选中项的背景
 hi CocPumSearch ctermfg=26                  " 列表项匹配的子子字符串的颜色
+
+" Q: nvim-treesitter语法高亮与coc.nvim语义高亮重复的问题
+" A: nvim-treesitter 主要提供的是基于语法的高亮,而不是传统意义上的
+"    基于语义的高亮。语法高亮是根据代码的语法结构(如关键字、操作符、
+"    标识符等)来应用颜色, 而语义高亮则涉及到代码的更深层次意义 (如
+"    变量类型、作用域等), 语义标记通过不同的颜色和样式来区分代码中
+"    各种元素,其中也会对变量、函数、类等进行高亮,而nvim-treesitter
+"    也会对变量、函数、类等进行高亮, 所以二者会存在重复高亮的问题,
+"    如何为nvim-treesitter与coc.nvim的高亮范围解释:
+"       nvim-treesitter语法高亮范围 : 基本语法类型
+"       coc.nvim       语义高亮范围 : 基本语法类型 + 作用域
+"
+"    q1: 如何查看某处语法是否重复高亮?
+"    a1: 在光标处执行Inspect命令, 如果显示treesitter和coc.nvim的两
+"       个高亮组, 则表示光标处内容存在双重高亮, 例如:
+"             Treesitter
+"               - @variable.c links to @variable c
+"               - @function.c links to Function c
+"
+"             Extmarks
+"               - CocSemTypeFunction links to Function coc-semanticTokens
+"               - CocSemTypeModFunctionDeclaration coc-semanticTokens
+"      
+"    q2: 如何解决重复高亮?
+"    a2: 基本类型高亮使用nvim-treesitter高亮,作用域高亮使用coc.nvim,
+"        所以关闭coc.nvim提供的基本类型高亮即可,具体地, 在光标处执行
+"        Inspect命令,查看coc开头的高亮组名字, 然后在 init.vim 中添加
+"        hi! link name NONE, 即可关闭coc对该类型对高亮
+
+" 关闭自定义类型(例如C结构体struct, typedef自定义类型)的coc高亮
+highlight! link CocSemTypeClass NONE        
 
 " -------------------------------------                    ultisnips & vim-snippets
 " Note: ultisnips插件提供一种快速操作代码片段的能力,例如编辑
@@ -1499,13 +1674,143 @@ hi StartifyFile ctermfg=23
 hi StartifyPath ctermfg=66
 
 " -------------------------------------                    nvim-treesitter
-" Note: 当前已安装的语言解析器
-"       [c] [vim] [vimdoc] [query] [lua] [markdown] [markdown_inline]
+" Note: 
+"       1. nvim treesitter系列插件作用解释
+"          (1) Treesitter是一个现代的、高性能源代码解析库, 可以构建出代码
+"              的语法树, 使编辑器能够更智能地理解代码的结构。Treesitter可
+"              以生成抽象语法树(AST)。与传统的词法分析器不同, TreeSitter
+"              可以实时更新AST, 这使得nvim-treesitter-textobjects能够即时
+"              响应代码的变化, 提供动态的文本对象选择
+"          (2) nvim-treesitter,支持nvim中使用Treesitter功能来增强
+"              文本对象的选择和操作
+"          (3) nvim-treesitter-textobjects,利用Treesitter的语法树,
+"              语法感知文本对象, 支持对语法文本对象进行选择、移动、
+"              交换和查看
+"       2. 当前已安装的语言解析器
+"          [c] [vim] [vimdoc] [query] [lua] [markdown] [markdown_inline]
 " Usage:
-"       @
+"       (1) nvim-treesitter : 针对语法节点的范围
+"           @sn : 开始选择语法节点,将选中光标下的最小语法节点
+"                 <助记>: sn=select now
+"           @se : 选择的范围会扩展到包含当前选择的下一个较大的语法节点
+"                 <助记>: se=select expand
+"           @su : 将扩展选择范围到当前节点的父级作用域
+"                 <助记>: su=select upgrade
+"           @sm : 选择的范围会缩小到当前选择的下一个较小的语法节点
+"                 <助记>: sm=select mini
+"       (2) nvim-treesitter-textobjects : 针对语法文本对象
+"           ● 选择
+"             ▶ 以下所列均代表范围,可配合vim动词进行操作,例如选择(v)、删除(d)、修改(c)
+"               例如, fa表示函数全部,dfa表示删除函数全部。如果是进入Visual模式进行选择,
+"               则可以不连按,例如vfa, 按下v后进入可视模式, 然后再按下范围fa(必须连按),
+"               选中整个函数
+"
+"               @fa : 整个函数,fa=function all
+"               @fi : 函数内部,fi=function inner
+"               @ca : 整个类
+"               @ci : 类内部
+"               @oa : 整个循环,o=lo'o'p, o外形为环状,表示循环
+"               @oi : 循环内部
+"               @sa : 条件选择(如if, else)整体, sa=select all
+"               @si : 条件选择语句的判断条件,si=select inner
+"               @ah : 赋值语句左侧,例如x = 5 + 3, 对应x, ah=assignment h, 即赋值左侧
+"               @al : 赋值语句右侧,例如x = 5 + 3, 对应5 + 3, al=assignment l, 即赋值右侧
+"               @ia : 选择函数调用的外部,整个被调用的函数,i=invoke(调用), ia=invoke all
+"               @ii : 选择函数调用的内部,被调用函数的参数部分,ii=invoke inner
+"               @ma : 整个注释,ma=co'm'ment all
+"               @mi : 注释符里的部分(当前只支持python,yaml语言),mi=co'm'ment inner
+"               @ra : 选择返回语句的外部部分,包含return关键字,例如return x, 会选中"return x", ra=return all
+"               @ri : 选择返回语句的内部部分,不包含return关键字,例如return x, 只会选中x, ri=return inner 
+"               @n  : 选中整个数字,n=number
+"               @u  : 选择一个完整的语句块单元,u=unit
+"               @ab : 语句块外部,括号+括号内部分,如{},(),[]等,ab=all block
+"               @ib : 语句块内部,即只有括号内部分, ib=inner block
+"                     [⚠️ ]Note: block文本对象的范围词与其他文本对象是反的,block的范围词在前,而其他在后,
+"                               因为block范围词在后时,例如vbi,范围选择会不准确,只有vib正确
+"               @ap : 选中函数参数,连同参数分隔符,如f(x, y),会选中 "x," 或者 ", y ", ap=all parameter
+"               @ip : 只选中函数参数,不包含参数间分隔符,例如f(x, y),会选中"x"或者"y", ip=inner parameter
+"                     [⚠️ ]Note: parameter文本对象的范围词与其他文本对象是反的,parameter的范围词在前,而其他在后,
+"                               因为parameter范围词在后时,例如vpi,范围选择会不准确,只有vip正确
+"             ▶ Tips: a. textobjects的作用重在选择文本范围,这些范围是基于treesitter
+"                        语法树分析的结果,相比于基于表达式的更加智能和准确
+"                     b. 光标不在语法点时,默认向下查找第一个语法点
+"           ● 移动
+"               @aj        : 回退到上一次光标位置
+"               @ak        : 前进到下一次光标位置
+"
+"             ▶ 函数 (f=function)
+"               @nfs / nfe : 跳转到下一个函数定义的开始处/结束处
+"                            助记: nfs=next function start 
+"                                  nfe=next function end
+"               @pfs / pfe : 跳转到上一个函数定义的开始处/结束处
+"                            助记: pfs=previous function start 
+"                                  pfe=previous function end
+"               @nf        : 跳转到下一个函数定义的开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pf        : 跳转到上一个函数定义的开始处|结束处(与上同理)
+"
+"             ▶ 循环 (o=loop)
+"               @nos / noe : 跳转到下一个循环开始处/结束处
+"               @pos / poe : 跳转到上一个循环开始处/结束处
+"               @no        : 跳转到下一个循环开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @po        : 跳转到上一个循环开始处|结束处(与上同理)
+"
+"             ▶ 条件选择 (s=select)
+"               @nss / nse : 跳转到下一个条件选择开始处/结束处
+"               @pss / pse : 跳转到上一个条件选择开始处/结束处
+"               @ns        : 跳转到下一个条件选择开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @ps        : 跳转到上一个条件选择开始处|结束处(与上同理)
+"
+"             ▶ 赋值语句 (a=assignment)
+"               @nah / nal : 跳转到下一个赋值语句开始处/结束处
+"               @pah / pal : 跳转到上一个赋值语句开始处/结束处
+"               @na        : 跳转到下一个赋值语句开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pa        : 跳转到上一个赋值语句开始处|结束处(与上同理)
+"
+"             ▶ 函数调用 (i=invoke)
+"               @nis / nie : 跳转到下一个函数调用开始处/结束处
+"               @pis / pie : 跳转到上一个函数调用开始处/结束处
+"               @ni        : 跳转到下一个函数调用开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pi        : 跳转到上一个函数调用开始处|结束处(与上同理)
+"
+"             ▶ 注释 (m=comment)
+"               @nms / nme : 跳转到下一个注释开始处/结束处
+"               @pms / pme : 跳转到上一个注释开始处/结束处
+"               @nm        : 跳转到下一个注释开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pm        : 跳转到上一个注释开始处|结束处(与上同理)
+"
+"             ▶ 返回语句 (r=return)
+"               @nrs / nre : 跳转到下一个返回语句开始处/结束处
+"               @prs / pre : 跳转到上一个返回语句开始处/结束处
+"               @nr        : 跳转到下一个返回语句开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pr        : 跳转到上一个返回语句开始处|结束处(与上同理)
+"
+"             ▶ 数字 (n=number)
+"               @nns / nne : 跳转到下一个数字开始处/结束处
+"               @pns / pne : 跳转到上一个数字开始处/结束处
+"               @nn        : 跳转到下一个数字开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pn        : 跳转到上一个数字开始处|结束处(与上同理)
+"
+"             ▶ 语句块单元 (u=unit)                      
+"               @ui        : 跳转到下一个语句块单元开始处  
+"               @uu        : 跳转到上一个语句块单元开始处
+"
+"             ▶ 函数参数 (p=parameter)
+"               @nps / npe : 跳转到下一个函数参数开始处/结束处
+"               @pps / ppe : 跳转到上一个函数参数开始处/结束处
+"               @np        : 跳转到下一个函数参数开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pp        : 跳转到上一个函数参数开始处|结束处(与上同理)
+"
+"             ▶ 代码块 (b=block)
+"               @nbs / nbe : 跳转到下一个代码块开始处/结束处
+"               @pbs / pbe : 跳转到上一个代码块开始处/结束处
+"               @nb        : 跳转到下一个代码块开始处|结束处(如果当前在开始处,再按到结束处,反之亦然)
+"               @pb        : 跳转到上一个代码块开始处|结束处(与上同理)
+"
 " zc 关闭光标下的折叠。
 " zo 打开光标下的折叠。
 " za 切换光标下的折叠状态。
+" zm: 增加foldlevel，使更多的折叠关闭。
+" zr: 减少foldlevel，使更多的折叠打开
 " zR 打开所有折叠。
 " zM 关闭所有折叠。
 "   ▶ nvim-treesitter命令
@@ -1522,6 +1827,12 @@ hi StartifyPath ctermfg=66
 "       @:EditQuery打开实时查询编辑器
 " Tips:
 "       助记: treesitter有关的命令为TS开头,TS=TreeSitter
+
+" 配置 Neovim 中的代码折叠(folding)功能,特别是通过 Tree-sitter 语法树来控制折叠行为
+set foldmethod=expr  " 设置折叠方法为表达式
+" 设置折叠表达式为 Tree-sitter 提供的函数,即使用 vim.treesitter.foldexpr() 函数来决定折叠,
+" 这个函数是由 Neovim 的 Tree-sitter 集成提供,它根据语法树的结构来计算折叠点
+set foldexpr=v:lua.vim.treesitter.foldexpr()
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
@@ -1547,25 +1858,233 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
     -- 这是一个键映射表,定义了如何通过键盘操作来控制增量选择的行为
     keymaps = {
-      -- 这个键绑定用于初始化选择。按下 gnn 时,将选中光标下的最小语法节点,如果设置为 false,则此映射被禁用
-      init_selection = "gnn",
-      -- 这个键绑定用于增加选择的范围。每次按下 grn,选择的范围会扩展到包含当前选择的下一个较大的语法节点
-      node_incremental = "grn",
-      -- 这个键绑定用于按作用域逐步增加选择范围。按下 grc 时,将扩展选择范围到当前节点的父级作用域
-      scope_incremental = "grc",
-      -- 这个键绑定用于减小选择的范围。每次按下 grm,选择的范围会缩小到当前选择的下一个较小的语法节点
-      node_decremental = "grm",
+      -- 这个键绑定用于初始化选择。按下 sn 时,将选中光标下的最小语法节点,如果设置为 false,则此映射被禁用
+      init_selection = "sn",
+      -- 这个键绑定用于增加选择的范围。每次按下 sn,选择的范围会扩展到包含当前选择的下一个较大的语法节点
+      node_incremental = "se",
+      -- 这个键绑定用于按作用域逐步增加选择范围。按下 su 时,将扩展选择范围到当前节点的父级作用域
+      scope_incremental = "su",
+      -- 这个键绑定用于减小选择的范围。每次按下 sm,选择的范围会缩小到当前选择的下一个较小的语法节点
+      node_decremental = "sm",
     },
   },
+-- -------------------------------------                    nvim-treesitter-textobjects 
+  -- textobjects对象
+  textobjects = {
+    -- 选择功能
+    select = {
+      -- 启用文本对象的选择功能
+      enable = true,
+
+      -- 在选择文本对象时自动向前查找,类似于Vim的targets.vim插件功能
+      lookahead = true,
+
+      -- 使用 keymaps 字典定义快捷键和对应的文本对象
+      -- 这些映射允许通过特定的快捷键选择代码中的特定文本对象。每个键位映射关联到一个查询字符串,这些字符串指定了要选择的代码结构
+      keymaps = {
+        -- 使用 af 快捷键选择整个函数的外部区域。这意味着选择从函数的开始到结束的整个区块
+        ["fa"] = "@function.outer",
+        -- 使用 if 快捷键选择函数的内部区域, 不包括函数的声明和尾部的大括号
+        ["fi"] = "@function.inner",
+        -- 用 ac 快捷键选择整个类的外部区域, 包括类的所有内容和包围它的大括号
+        ["ca"] = "@class.outer",
+        -- 使用 ic 快捷键选择类的内部部分, 不包括类的大括号。此映射还包含一个描述, 说明了这个快捷键的功能,
+        -- 这在使用如 which-key 这样的插件时可以显示给用户看
+        ["ci"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+        ["oa"] = "@loop.outer",         -- 整个循环
+		["oi"] = "@loop.inner",         -- 循环内的部分
+		["sa"] = "@conditional.outer",  -- 条件选择(如if, else)整体
+		["si"] = "@conditional.inner",  -- 条件选择语句的条件部分
+		["ah"] = "@assignment.lhs",     -- 赋值语句左侧,例如x = 5 + 3, 对应x
+		["al"] = "@assignment.rhs",     -- 赋值语句右侧,例如x = 5 + 3, 对应5 + 3
+		["ia"] = "@call.outer",         -- 选择函数调用的外部,整个被调用的函数,i=invoke(调用)
+		["ii"] = "@call.inner",         -- 选择函数调用的内部,被调用函数的参数部分
+		["ma"] = "@comment.outer",      -- 整个注释
+		["mi"] = "@comment.inner",      -- 注释符里的部分(当前只支持python,yaml语言)
+		["ra"] = "@return.outer",       -- 选择整个返回语句,包含return关键字,例如return x, 会选中"return x"
+		["ri"] = "@return.inner",       -- 选择返回语句,不包含return关键字,例如return x, 只会选中x
+		["n"]  = "@number.inner",       -- 选中整个数字,n=number
+		["u"]  = "@statement.outer",    -- 选择一个完整的语句块单元,u=unit
+        ["ab"] = "@block.outer",        -- 代码块外部,括号+括号内部分,如{},(),[]等
+		["ib"] = "@block.inner",        -- 代码块内部,即只有括号内部分
+		["ap"] = "@parameter.outer",    -- 选中函数参数,连同参数分隔符,如f(x, y),会选中 "x," 或者 ", y "
+		["ip"] = "@parameter.inner",    -- 只选中函数参数,不包含参数间分隔符,例如f(x, y),会选中"x"或者"y"
+		-- ["ag"] = "@regex.outer",        -- 选择正则表达式的外部部分,支持vim      [暂未明确范围]
+		-- ["ig"] = "@regex.inner",        -- 选择正则表达式的内部部分,支持bash,vim [暂未明确范围]
+        -- 使用 ls 快捷键选择当前语言作用域。这个映射指定了查询组locals,这意味着它使用的是 locals.scm 查询文件中定义的作用域。
+        -- 同样, 这里也提供了一个描述,帮助用户理解这个快捷键的作用
+        -- ["ls"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+      },
+
+      -- selection_modes 字典允许为不同的文本对象指定选择模式(字符选择、行选择或块选择)
+      -- 例如, ['@function.outer'] = 'V' 表示选择整个函数时使用行选择模式。
+      selection_modes = {
+        ['@parameter.outer'] = 'v', -- charwise
+        ['@function.outer'] = 'V', -- linewise
+        ['@class.outer'] = '<c-v>', -- blockwise
+      },
+      -- 在选择文本对象时包括前导或后续的空白字符
+      include_surrounding_whitespace = true,
+    },
+
+    -- 交换功能(当前状态: 关闭)
+    swap = {
+        enable = false,    -- 交换功能关闭
+        swap_next = {
+          ["<leader>a"] = "@parameter.inner",
+        },
+        swap_previous = {
+          ["<leader>A"] = "@parameter.inner",
+        },
+    },
+
+    -- 移动功能
+    move = {
+        enable = true,    -- 启用移动功能
+        -- 当你设置 set_jumps = true 时,这意味着每次使用 nvim-treesitter 插件的文本对象移动功能时,都会在跳转列表(jumplist)中记录一个条目。
+        -- 这允许你使用 Neovim 的跳转命令在编辑历史中前后移动
+        -- 跳转命令:
+        --    Ctrl-o :  后退到上一次光标位置(已自定义映射为: aj, a=at)
+        --    Ctrl-i :  前进到下一次光标位置(已自定义映射为: ak)
+        set_jumps = true, -- 在跳转列表中设置跳转点, 允许使用如 Ctrl-o 和 Ctrl-i 在跳转点之间前后移动
+        goto_next_start = {
+          ["nfs"] = "@function.outer",    -- 跳转到下一个函数定义开始处
+          -- ["]]"] = { query = "@class.outer", desc = "Next class start" },
+          -- ["]o"] = "@loop.*",
+          -- ["]o"] = { query = { "@loop.inner", "@loop.outer" } },
+          ["nos"] = "@loop.outer",        -- 跳转到下一个循环开始处
+          ["nss"] = "@conditional.outer", -- 跳转到下一个条件选择开始处
+          ["nah"] = "@assignment.lhs",    -- 跳转到下一个赋值语句的左侧(即赋值开始)
+          ["nis"] = "@call.outer",        -- 跳转到下一个函数调用的开始处
+          ["nms"] = "@comment.outer",     -- 跳转到下一个注释的开始处
+          ["nrs"] = "@return.outer",      -- 跳转到下一个返回语句的开始处
+          ["nns"] = "@number.inner",      -- 跳转到下一个数字的开始处
+          ["ui"]  = "@statement.outer",   -- 跳转到下一个语句块单元的开始处
+          ["nps"] = "@parameter.outer",   -- 跳转到下一个函数参数的开始处
+                                          -- treesitter的参数头和参数尾解释:
+                                          --          参数头          参数尾参数头          参数尾参数头          参数尾
+                                          --            ↓                  ↓↓                    ↓↓                 ↓
+                                          --        foo(struct mm_struct *mm, struct ma_state *mas, bool mm_wr_locked)
+          ["nbs"] = "@block.outer",       -- 跳转到下一个语句块的开始
+
+          -- ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+          -- ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+        },
+        goto_next_end = {
+          ["nfe"] = "@function.outer",    -- 跳转到下一个函数定义结束处
+          -- ["]["] = "@class.outer",
+          ["noe"] = "@loop.outer",        -- 跳转到下一个循环结束处
+          ["nse"] = "@conditional.outer", -- 跳转到下一个条件选择结束处
+          ["nal"] = "@assignment.rhs",    -- 跳转到下一个赋值语句的右侧(即赋值结束)
+          ["nie"] = "@call.outer",        -- 跳转到下一个函数调用的结束处
+          ["nme"] = "@comment.outer",     -- 跳转到下一个注释的结束处
+          ["nre"] = "@return.outer",      -- 跳转到下一个返回语句的结束处
+          ["nne"] = "@number.inner",      -- 跳转到下一个数字的结束处
+          ["npe"] = "@parameter.outer",   -- 跳转到下一个函数参数的结束处
+          ["nbe"] = "@block.outer",       -- 跳转到下一个语句块的结束
+        },
+        goto_previous_start = {
+          ["pfs"] = "@function.outer",    -- 跳转到上一个函数定义开始处
+          -- ["[["] = "@class.outer",
+          ["pos"] = "@loop.outer",        -- 跳转到上一个循环开始处
+          ["pss"] = "@conditional.outer", -- 跳转到上一个条件选择开始处
+          ["pah"] = "@assignment.lhs",    -- 跳转到上一个赋值语句的左侧(即赋值开始)
+          ["pis"] = "@call.outer",        -- 跳转到上一个函数调用的开始处
+          ["pms"] = "@comment.outer",     -- 跳转到上一个注释的开始处
+          ["prs"] = "@return.outer",      -- 跳转到上一个返回语句的开始处
+          ["pns"] = "@number.inner",      -- 跳转到上一个数字的开始处
+          ["uu"]  = "@statement.outer",   -- 跳转到上一个语句块单元的开始处
+          ["pps"] = "@parameter.outer",   -- 跳转到上一个函数参数的开始处
+          ["pbs"] = "@block.outer",       -- 跳转到上一个语句块的开始
+        },
+        goto_previous_end = {
+          ["pfe"] = "@function.outer",    -- 跳转到上一个函数定义结束处
+          -- ["[]"] = "@class.outer",
+          ["poe"] = "@loop.outer",        -- 跳转到上一个循环结束处
+          ["pse"] = "@conditional.outer", -- 跳转到上一个条件选择结束处
+          ["pal"] = "@assignment.rhs",    -- 跳转到上一个赋值语句的右侧(即赋值结束)
+          ["pie"] = "@call.outer",        -- 跳转到上一个函数调用的结束处
+          ["pme"] = "@comment.outer",     -- 跳转到上一个注释的结束处
+          ["pre"] = "@return.outer",      -- 跳转到上一个返回语句的结束处
+          ["pne"] = "@number.inner",      -- 跳转到上一个数字的结束处
+          ["ppe"] = "@parameter.outer",   -- 跳转到上一个函数参数的结束处
+          ["pbe"] = "@block.outer",       -- 跳转到上一个语句块的结束
+        },
+        goto_next = {
+          ["nf"] = "@function.outer",     -- 跳转到下一个函数定义的开始处|结束处
+          ["no"] = "@loop.outer",         -- 跳转到下一个循环开始处|结束处
+          ["ns"] = "@conditional.outer",  -- 跳转到下一个条件选择开始处|结束处
+          ["na"] = "@assignment.lhs",     -- 跳转到下一个赋值语句的左侧(即赋值开始)
+          ["ni"] = "@call.outer",         -- 跳转到下一个函数调用的开始|结束
+          ["nm"] = "@comment.outer",      -- 跳转到下一个注释的开始|结束
+          ["nr"] = "@return.outer",       -- 跳转到下一个返回语句的开始|结束
+          ["nn"] = "@number.inner",       -- 跳转到下一个数字的开始|结束
+          -- ["nu"] = "@statement.outer",    -- 跳转到下一个语句块单元的开始|结束
+          ["np"] = "@parameter.outer",    -- 跳转到下一个函数参数的开始|结束
+          ["nb"] = "@block.outer",        -- 跳转到下一个语句块的开始|结束
+        },
+        goto_previous = {
+          ["pf"] = "@function.outer",     -- 跳转到上一个函数定义的开始处|结束处
+          ["po"] = "@loop.outer",         -- 跳转到上一个循环开始处|结束处
+          ["ps"] = "@conditional.outer",  -- 跳转到上一个条件选择开始处|结束处
+          ["pa"] = "@assignment.lhs",     -- 跳转到上一个赋值语句的左侧(即赋值开始)
+          ["pi"] = "@call.outer",         -- 跳转到上一个函数调用的开始|结束
+          ["pm"] = "@comment.outer",      -- 跳转到上一个注释的开始|结束
+          ["pr"] = "@return.outer",       -- 跳转到上一个返回语句的开始|结束
+          ["pn"] = "@number.inner",       -- 跳转到上一个数字的开始|结束
+          -- ["pu"] = "@statement.outer",    -- 跳转到上一个语句块单元的开始|结束
+          ["pp"] = "@parameter.outer",    -- 跳转到上一个函数参数的开始|结束
+          ["pb"] = "@block.outer",        -- 跳转到上一个语句块的开始|结束
+        },
+    },
+  },  
 }
+
+-- 增强键位映射的功能,使textobjects的move功能的移动操作可以重复执行,并且可以指定操作的方向
+local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+
+vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+-- 反方向重复执行上一次光标移动,自定义映射为;;
+vim.keymap.set({ "n", "x", "o" }, ";;", ts_repeat_move.repeat_last_move_opposite)
+
+vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
+vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
 EOF
 
-" 配置 Neovim 中的代码折叠(folding)功能,特别是通过 Tree-sitter 语法树来控制折叠行为
-set foldmethod=expr  " 设置折叠方法为表达式
-" 设置折叠表达式为 Tree-sitter 提供的函数,即使用 vim.treesitter.foldexpr() 函数来决定折叠,
-" 这个函数是由 Neovim 的 Tree-sitter 集成提供,它根据语法树的结构来计算折叠点
-set foldexpr=v:lua.vim.treesitter.foldexpr()
+" -------------------------------------                    nvim-treesitter-context 
+" Usage:
+"       @af : 跳转到顶部显示的代码上下文处,af=at first
+lua <<EOF
+require'treesitter-context'.setup{
+  -- 启用treesitter提供代码上下文信息
+  enable = true,
+  -- 设置上下文窗口应跨越的行数。如果设置为<=0,则表示没有限制
+  max_lines = 0,
+  -- 设置启用上下文的最小编辑器窗口高度。如果设置为<=0,则表示没有限制
+  min_window_height = 0,
+  -- 如果设置为true, 则在上下文窗口中显示行号
+  line_numbers = true,
+  -- 设置单个上下文显示的最大行数
+  multiline_threshold = 20,
+  -- 如果 max_lines 被超过, 设置要丢弃的上下文行的范围。可选值为 'inner' 或 'outer'
+  trim_scope = 'outer',
+  -- 设置用于计算上下文的行。可选值为'cursor'(光标所在行)或'topline'(窗口顶部行)
+  mode = 'topline',
+  -- 设置上下文和内容之间的分隔符。应为单个字符字符串,如 '-'。当设置了分隔符时,只有当光标线上方至少有两行时,上下文才会显示。
+  separator = nil,
+  -- zindex用于确定页面上元素的堆叠顺序,即用于控制上下文窗口相对于其他可能的浮动窗口的堆叠顺序。一个较高的 zindex 值意味着上下文窗口将显示在其他较低 zindex 值的窗口之上
+  zindex = 20,
+  -- 允许用户根据缓冲区的类型或特定条件来启用或禁用上下文显示
+  on_attach = nil,
 
+  -- 快速跳转到顶部显示的代码上下文处
+  vim.keymap.set("n", "af", function()
+    require("treesitter-context").go_to_context(vim.v.count1)
+  end, { silent = true })
+}
+EOF
 
 
 " -------------------------------------                    vim-orgmode
@@ -1592,18 +2111,23 @@ set fillchars+=vert:\⎜
 set fillchars+=diff:\ 
 
 " -------------------------------------                    vim光标
-set guicursor=a:block-iCursor-blinkon0      " 设置所有模式下光标保持为不闪烁的块
+" 设置所有模式下光标保持为不闪烁的块
+set guicursor=a:block-iCursor-blinkon0      
 
-" 终端模拟器光标颜色(此处用于控制vim-fzf插件打开的搜索窗口中的光标颜色)
+" 终端模拟器光标颜色(此处用于控制vim-fzf插件打开的
+" 搜索窗口中的光标颜色)
 hi TermCursor ctermbg=NONE ctermfg=darkred
 
-" 修改vim-easymotion插件搜索输入(按/)时双光标问题的第一个光标颜色(此问题属于nvim问题,还未修复)
+" 修改vim-easymotion插件搜索输入(按/)时双光标问题的
+" 第一个光标颜色(此问题属于nvim问题,还未修复)
 hi Cursor ctermbg=166 ctermfg=166
 
 " 自定义vim颜色配置
+" `````````````````````````````````````````````````````````````````````````````
 " -------------------------------------                    vim区域配色
 " Note: 分割线颜色(必须放在vim配置的最后，否则不生效)
-hi WinSeparator cterm=bold ctermbg=NONE ctermfg=22   " nvim使用WinSeparator控制垂直分割线
+" nvim使用WinSeparator控制垂直分割线
+hi WinSeparator cterm=bold ctermbg=NONE ctermfg=22   
 
 " 当前行&当前行行号&当前列颜色
 highlight CursorLine cterm=bold ctermfg=NONE ctermbg=NONE
@@ -1641,7 +2165,7 @@ highlight DiffChange cterm=NONE ctermfg=1 ctermbg=224
 highlight DiffText cterm=NONE ctermfg=124 ctermbg=217
 
 " vim 菜单配色
-highlight PMenu cterm=NONE ctermfg=15 ctermbg=23           " 列表背景
+highlight PMenu cterm=NONE ctermfg=15 ctermbg=66           " 列表背景
 highlight PMenuSel cterm=NONE ctermfg=15 ctermbg=106       " 列表选中项的背景
 highlight PmenuSbar cterm=NONE ctermfg=NONE ctermbg=23     " 弹出菜单的滚动条区域背景
 highlight PmenuThumb cterm=NONE ctermfg=white ctermbg=23   " 滚动条区域中的拖动条颜色
@@ -1657,22 +2181,23 @@ highlight FoldColumn ctermfg=NONE ctermbg=NONE     " 折叠列
 highlight CursorLineFold ctermfg=NONE ctermbg=NONE " 光标所在行折叠
 
 " vim 可视(块)模式下选中文字的背景色
-" highlight Visual ctermbg=151 ctermfg=22
 highlight Visual ctermbg=194 ctermfg=23
 
 " -------------------------------------                    vim语法通用部分配色
-" Note: 语言相关的配色通过ftplugin目录下的x.vim进行单独配色,例如c.vim为C语言配色,
-"       语言文件中未指定的配色,将使用vim的自动配色设置，就是下面的语法类型的设置
+" Note: 语言相关的配色通过ftplugin目录下的x.vim进行单独配色,
+"       例如c.vim为C语言配色, 语言文件中未指定的配色,将使用
+"       vim的自动配色设置，就是下面的语法类型的设置
 "
 " Tips:
 "       Q: 想修改某个字符的配色,如何查看它属于哪个高亮组？
 "       A: 将光标放在该单词上,然后使用以下命令来检查该位置的语法组: 
-"               :echo synIDattr(synID(line("."), col("."), 1), "name")
+"            :echo synIDattr(synID(line("."), col("."), 1), "name")
 "       Q: 怎么查看某个高亮组是哪种配色方案？
 "       A: 使用hi(highlight缩写)命令, 例如查看VertSplit的高亮色,命令如下:
-"               :hi VertSplit     
+"            :hi VertSplit     
 "
 " 语法类解释:
+"     Normal        : vim普通文本(非语法块文字,及提示信息文字)
 "     Comment       : 用于注释代码中的解释或说明        
 "     Constant      : 常数,表示固定的数值、字符串或符号
 "     Special       : 表示特殊字符或符号
@@ -1705,7 +2230,8 @@ highlight Visual ctermbg=194 ctermfg=23
 "     Delimiter     : 表示分隔符
 "     SpecialComment: 表示特殊注释
 
-hi Comment cterm=NONE ctermfg=239
+hi Normal ctermfg=238
+hi Comment cterm=NONE ctermfg=242
 hi Constant cterm=NONE ctermfg=88    
 hi Special cterm=NONE ctermfg=5
 hi Identifier cterm=NONE ctermfg=25
@@ -1714,7 +2240,7 @@ hi Statement cterm=NONE ctermfg=130
 hi PreProc cterm=NONE ctermfg=88
 hi Type cterm=NONE ctermfg=28
 hi Ignore cterm=NONE ctermfg=88
-hi String cterm=NONE ctermfg=88
+hi String cterm=NONE ctermfg=24
 hi Character cterm=NONE ctermfg=88
 hi Number cterm=NONE ctermfg=88
 hi Boolean cterm=NONE ctermfg=136
@@ -1737,7 +2263,7 @@ hi SpecialChar cterm=NONE ctermfg=88
 hi Delimiter cterm=NONE ctermfg=130
 hi SpecialComment cterm=NONE ctermfg=239
 
-" ------------------------------------- nvim-treesitter语法配色                    
+" -------------------------------------                    nvim-treesitter语法配色
 " Note:
 "       (1) 在nvim-treesitter中,每种语言的Treesitter解析器都有自己的查询文件,
 "           可在nvim-treesitter的每个语言解析器目录下找到 highlights.scm文件,
@@ -1761,7 +2287,7 @@ hi SpecialComment cterm=NONE ctermfg=239
 hi keyword ctermfg=130
 
 " C语法配色
-hi @keyword.import ctermfg=17       " #include
+hi @keyword.import ctermfg=66       " #include
 hi @keyword.conditional ctermfg=126 " if/else/case/switch
 " [
 "   "#if"
@@ -1776,17 +2302,20 @@ hi @keyword.conditional ctermfg=126 " if/else/case/switch
 " ] @keyword.directive
 hi @keyword.directive ctermfg=6
 hi @keyword.directive.define ctermfg=126 " #define" @keyword.directive.define
+hi @keyword.repeat.c ctermfg=124
+
 hi @type ctermfg=2      " typedef定义的类型等
 hi @property ctermfg=66 " field_identifier,即字段名(结构体成员)
 
 " -------------------------------------                    高亮显示y命令复制区域
- " 定义高亮样式
+" 定义高亮样式
 highlight YankHighlight ctermbg=229
- " 使用自动命令在复制后高亮显示
+" 使用自动命令在复制后高亮显示
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="YankHighlight", timeout=200}
 
 
 " 自定义vim自动命令
+" `````````````````````````````````````````````````````````````````````````````
 " -------------------------------------                    设置quickfix窗口高度
 autocmd FileType qf setlocal winheight=20
 
@@ -1804,6 +2333,7 @@ autocmd FileType qf nnoremap <silent> <buffer> q :wincmd p<CR>:cclose<CR>
 
 
 " 自定义vim快捷键映射
+" `````````````````````````````````````````````````````````````````````````````
 " -------------------------------------                    分屏
 " Note: 
 "       h=horizontal,水平
@@ -1926,7 +2456,7 @@ noremap <silent> ee $
 " -------------------------------------                    光标回行首/尾+进入插入模式
 " Usage:
 "       @ai : 光标回行首+进入插入模式
-"       @ei : 光标回行尾+进入插入模式
+"       @ei : 光标回行尾+进入插入模式(支持Normal+Insert模式)
 nnoremap <silent> ai I
 nnoremap <silent> ei A
 inoremap <silent> ei <Esc>A
@@ -1948,7 +2478,8 @@ nnoremap <silent> a<Space> ls<Space>
 " Tips: 
 "       助记: c=clear,表示清除
 nnoremap <silent> cj kdd
-nnoremap <silent> ck jddk
+nnoremap <silent> ck :let save_cursor = getpos(".")<CR>:execute save_cursor[1] + 1 . "delete"<CR>:call setpos('.', save_cursor)<CR>
+
 
 " -------------------------------------                    清空上/下一行内容
 " Usage:
@@ -1956,35 +2487,40 @@ nnoremap <silent> ck jddk
 "       @sk : 清空下一行内容
 " Tips:
 "       助记: s=space,空格,表示变成空行,即清空行
-nnoremap <silent> sj k0Dj
-nnoremap <silent> sk j0Dk
+
+" Tips: sj使用黑洞寄存器 "_ 删除从光标位置到行尾的内容,黑洞寄存器
+"       可以避免不必要的剪贴板覆盖,对操作对环境的影响最小
+nnoremap <silent> sj k0"_Dj
+nnoremap <silent> sk :let save_cursor = getpos(".")<CR>:execute save_cursor[1] + 1 . "s/.*//"<CR>:call setpos('.', save_cursor)<CR>
 
 " -------------------------------------                    清空当前行内容
 " Usage:
 "       @sl : 清空当前行内容, 助记:space line,清空行
-nnoremap <silent> sl Vs<ESC>
+nnoremap <silent> sl S<ESC>
 
 " -------------------------------------                    清空当前行内容+进入插入模式
 " Usage:
 "       @空格+i : 清空行,并进入插入模式
 " Tips: 空格+i=清空+insert
-nnoremap <silent> <Space>i Vs
+nnoremap <silent> <Space>i S
 
 " -------------------------------------                    在上/下一行末尾进入插入模式 (支持Normal模式+插入模式)
 " Usage:
-"       @ej : 在上一行末尾进入插入模式
+"       @ej : 在上一行末尾进入插入模式(支持Normal+Insert模式)
 "       @ek : 在下一行末尾进入插入模式
 " Tips: 
 "      助记: ej/ek中的e同时包含两个含义, e=end+edit,即末尾编辑
 nnoremap <silent> ej kA
+inoremap <silent> ej <Esc>kA
 nnoremap <silent> ek jA
+inoremap <silent> ek <Esc>jA
 
 " -------------------------------------                    在上/下一行开头进入插入模式
 " Usage:
-"       @aj : 在上一行开头进入插入模式
-"       @ak : 在下一行开头进入插入模式
-nnoremap <silent> aj k0i
-nnoremap <silent> ak j0i
+"       @hj : 在上一行开头进入插入模式
+"       @hk : 在下一行开头进入插入模式
+nnoremap <silent> hj k0i
+nnoremap <silent> hk j0i
 
 " -------------------------------------                    在下一行进入插入模式+Tab缩进 (支持Normal模式+插入模式)
 " Usage:
@@ -2001,18 +2537,34 @@ nnoremap <silent> <C-k> :m+1<CR>
 
 " -------------------------------------                    增加空格
 " Usage:
-"   @gs : 在光标前添加一个空格(generate space)
+"   @g+空格 : 在光标前添加一个空格(generate space)
 nnoremap <silent> g<Space> :normal! i<Space><Esc>
 
-
-" -------------------------------------                    增加空行
+" -------------------------------------                    增加空行(光标保持当前行)
 " Usage:
 "       @gj : 在上方增加空行(光标在当前行不动)
 "       @gk : 在下方增加空行(光标在当前行不动)
-"       @ga : 在上方+下方增加空格,并进入插入模式
+"       @ga : 在当前行上方+下方增加空行(光标在当前行不动), 进入插入模式
+"       @go : 在上方 [ 上方无空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  ᒥ ---    ᒣ
+"             Tips: go=great o, 即大o(O)命令                                     ᒪ --- ⬆  ᒧ
+
+"       @gu : 在下方 [ 下方无空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  ᒥ --- ⬇  ᒣ
+"             Tips: gu=generate u,u=under, 表示在……下面,即在当前行下面           ᒪ ---    ᒧ
+"                   生成空白行
+"       @ao : 在上方 [ 上方有空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  ᒥ ---    ᒣ
+"             Tips: ao=above o, above=上面, 即在行上方执行o命令                                 
+"                                                                                ᒪ --- ⬆  ᒧ
+"
+"       @bo : 在下方 [ 下方有空行 ] 增加三行空行,并将光标位于中行, 进入插入模式  ᒥ --- ⬇  ᒣ
+"             Tips: bo=bottom o, 在行底部执行o命令
+"                                                                                ᒪ ---    ᒧ
 nmap <silent> gj O<Esc>k
 nmap <silent> gk o<Esc>j
-noremap <silent> ga O<Esc>ko<Esc>j
+noremap <silent> ga O<Esc>o
+noremap <silent> go O<Esc>o<Esc>O
+noremap <silent> gu o<Esc>O<Esc>o
+noremap <silent> ao O<Esc>O
+noremap <silent> bo o<Esc>o
 
 " -------------------------------------                    增加换行
 " Usage:
@@ -2035,14 +2587,14 @@ set timeoutlen=200
 "       % : 表示选择整个文件。
 "       y : 是 yank(复制)命令。
 "       + : 指定使用系统剪贴板
-nnoremap <silent> ya :%y<CR>
+" nnoremap <silent> ya :%y<CR>
 nnoremap <silent> yb :%y+<CR>
 
 " -------------------------------------                    剪贴全文
 " Usage:
 "       @da : 剪贴全文到vim剪贴板
 "       @db : 剪贴全文到系统剪贴板 
-nnoremap <silent> da :%d<CR>
+" nnoremap <silent> da :%d<CR>
 nnoremap <silent> db :%d+<CR>
 
 " -------------------------------------                    复制光标到行尾
@@ -2128,11 +2680,6 @@ nnoremap <silent> ew :w<CR>
 "             Tips: we=write exit : 写入并退出
 nnoremap <silent> we ZZ
 
-" -------------------------------------                    反方向重复执行上一次光标移动
-" Usage:
-"       @'  : 反方向重复上一次光标移动
-nnoremap <silent> ' ,
-
 " -------------------------------------                    高亮光标所在行/列
 " Usage:
 "       @eh : 开启光标所在行高亮,再按一次关闭
@@ -2169,6 +2716,7 @@ nnoremap <silent> et :call ToggleHighlight()<CR>:set cursorcolumn!<CR>
 " -------------------------------------                    显示Buffer列表并切换/关闭/分屏
 " Usage:
 "       @bl  : 使用quickfix显示buffer列表,在选项上按Enter即可跳转
+"       @bj  : 使用quickfix显示buffer列表,在选项上显示位置字符(按下位置字符进行跳转)
 "
 "       ▶ 进入quickfix后:
 "            @按Enter : 切换到对应buffer
@@ -2180,6 +2728,7 @@ nnoremap <silent> et :call ToggleHighlight()<CR>:set cursorcolumn!<CR>
 "            @按Tab   : 多选
 " Tips:
 "       助记: bl=buffer list, 即buffer列表
+"             bj=buffer jump, 即buffer跳转
 
 let g:selected_buffers = []     " 选中的buffer列表
 
@@ -2307,7 +2856,7 @@ function! HandleFoucsBuffer(bufnr)
 endfunction
 
 " 检查是否能找到既不是空buffer也不是quickfix buffer的buffer
- function! CheckBuffers() abort
+function! CheckBuffers() abort
     " 遍历所有的 buffer
     for bufnr in range(1, bufnr('$'))
         " 找到一个不是空buffer 和 quickfix buffer的buffer
@@ -2475,14 +3024,16 @@ function! ShowBuffersWithActions()
 endfunction
 
 nnoremap <silent> bl :call ShowBuffersWithActions()<CR>:botright copen<CR>
+nnoremap <silent> bj :call ShowBuffersWithActions()<CR>:botright copen<CR>:<C-U>call EasyMotion#JK(0,0)<CR>
 
 
 " -------------------------------------                    关闭当前Buffer
 " Usage:
-"       @er : 关闭当前buffer
+"       @eu : 关闭当前buffer
 " Tips:
-"       助记: er=exit buffe_r_, 即退出buffer
-nnoremap <silent> er :bd<CR>
+"       助记: eu=exit b'u'ffer, 即退出buffer
+nnoremap <silent> eu :bd<CR>
+
 
 " -------------------------------------                    恢复上次窗口布局
 " Usage:
@@ -2503,33 +3054,210 @@ endfunction
 
 " 在离开任何窗口时自动保存 session
 autocmd WinLeave * call SaveSession()
+" 窗口独显(命令行执行:only命令)时自动保存session
+"  自动命令,在命令行模式离开时触发。
+"   (1) getcmdtype() 检查命令类型是否为普通命令(以 : 开始)
+"   (2) getcmdline() 检查输入的命令是否是 only
+"  如果这两个条件都满足,那么 SaveSession() 将被调用
+autocmd CmdlineLeave : if getcmdtype() == ':' && getcmdline() == 'only' | call SaveSession() | endif
 
 nnoremap <silent> wr :call RestoreSession()<CR>
 
-" -------------------------------------                    新建tab/buffer
+" -------------------------------------                    新建tab
 " Usage:
 "       @nt  : 新建tab,nt=new tab
-"       @nb  : 新建空白buffer,nb=new buffer
 nnoremap <silent> nt :tabnew<CR>
 
 " -------------------------------------                    进入命令行模式
 " Usage:
-"       @md : 进入vim命令行模式
+"       @md : 进入vim命令行模式(支持可视模式)
 " Tips:
 "       @助记: md=com'm'an'd'
 nnoremap md :
+vnoremap md :
 
-" -------------------------------------                    文件重命名
-" Note: 使用echon替代echo来连续输出文本,而不会自动添加新行。
-"       echohl用于设置接下来的文本高亮,直到遇到echohl None
-"       重置为默认格式
+" -------------------------------------                    新建无文件缓冲区并命名
+" Note: 在Vim中, 没有和文件关联的缓冲区称为无文件缓冲区(nofile buffer)
+" Usage:                                                         
+"       @bn : 按bn后提示输入名字,按Enter后会以该名字创建
+"             一个空白buffer,并进入插入模式,bn=buffer new
+" 新建的文件只存在于vim缓冲区,必须使用sf(save file)命令手动保存,否则不会存在
+function! OpenBlankBufferWithInput()
+    " 提示用户输入缓冲区名字
+    let buffername = input('[Create No-File Buffer] Enter the buffer name: ')
+    if buffername != ''
+        " 创建一个新的空白缓冲区
+        enew
+        " 确保新缓冲区不会与任何实际的文件关联
+        " 设置当前缓冲区的局部选项,而不影响其他缓冲区或全局设置。这意味着通过 setlocal 设置的任何选项只会应用于当前打开的缓冲区
+        setlocal buftype=nofile    " 设置缓冲区的类型为无文件类型
+        " 设置缓冲区的名字
+        execute 'file ' . buffername
+        " 清空命令行消息并强制刷新界面
+        redraw!
+        echo ""
+        " 进入插入模式
+        startinsert
+    else
+        redraw!
+        echo ""
+        " 创建一个新的空白缓冲区
+        enew
+    endif
+endfunction
+nnoremap <silent> bn :call OpenBlankBufferWithInput()<CR>
+
+" -------------------------------------                    保存无文件缓冲区为文件
+" Note: vim buftype 的类型
+"         nofile  : 这种类型的缓冲区不与任何文件关联,不会被写入磁盘
+"         nowrite : 这种类型的缓冲区不能被保存
+"         quickfix: 快速修复窗口的缓冲区,通常用于显示搜索结果或编译错误
+"         help    : 帮助窗口的缓冲区,用于显示 Vim 的帮助文档
+"         acwrite : 当尝试写入缓冲区时,会触发BufWriteCmd事件,允许通过自定义命令处理写入操作
 " Usage:
-"       @nr : 文件重命名
+"       @hf : 无文件缓冲区保存为文件
+" Tips: 助记, hf=hold file, 即保存为文件, hold=保存
+function! SaveFileWithBrowse()
+    " 获取当前缓冲区的文件名，不包括路径
+    let filename = expand('%:t')
+    let overwrite = 0
+
+    " 首先询问用户是否保存在当前路径
+    let currentPath = expand('%:p:h') . '/'   " 取当前文件的目录路径,并确保路径以斜杠(/)结尾
+    echo ""
+    echo 'Save to current path (' . currentPath . ')? [y/n] (default y): '
+    let userChoice = getchar()
+    " 检查是否按下了y或Enter键(其ASCII值为13)
+    if userChoice == char2nr('y') || userChoice == 13
+        " 如果选择 'y' 或输入空(按Enter), 则使用当前路径
+        let savePath = currentPath
+    else
+    " 如果用户选择 'n'，则提示输入新的路径
+        let savePath = ''
+        while savePath == ''
+            redraw! 
+            let savePath = input('Enter new path: ', '', 'dir')
+            " 如果用户取消对话框或未选择路径
+            if savePath == ''
+                echo ""
+                echo '[Empty Path] save canceled'
+                return
+            endif
+            " redraw!强制刷新屏幕显示
+            redraw! 
+            echo ""
+            echo 'Will be saved in path '
+            echohl DiffAdd
+            echon savePath
+            echohl None
+            echo 'Confirm? [y/n] (default y): '
+            let choice = getchar()
+            if choice == char2nr('y') || choice == 13
+                break
+            elseif choice == 'n'
+                let savePath = ''
+            endif
+        endwhile
+    endif
+
+    let saveFile = savePath . filename
+    " 检查文件是否存在并且可读
+    while filereadable(saveFile)
+        " 提示用户文件已存在，并询问是否覆盖
+        redraw!
+        echo ""
+        echohl Search
+        echo '[!] File already exists.'
+        echohl None
+        echo 'Overwrite? [y/n] (default n): '
+        let mychoice = getchar()
+        " 如果选择不覆盖
+        if mychoice == char2nr('n') || mychoice == 13
+            echo ""
+            redraw!
+            let filename = input('Enter new buffer name: ')
+            if filename != ''
+                " 重新设置当前缓冲区的名字
+                execute 'file ' . filename
+                let saveFile = savePath . filename
+                continue
+            else
+                echo ""
+                echo '[Empty Name] save canceled'
+                return
+            endif
+        elseif mychoice == char2nr('y')
+            let overwrite = 1
+            break
+        endif
+    endwhile
+
+    " 保存文件
+    setlocal buftype= 
+    " 保存当前缓冲区到一个新的文件路径,这个路径由变量savePath指定。saveas命令类似于:w命令,但它还会改变当前缓冲区的关联文件
+    execute 'saveas! ' . saveFile
+
+    redraw!
+    " 显示确认信息
+    echo ""
+    echo 'File saved as '
+    echohl DiffAdd
+    if overwrite == 1
+        echon saveFile
+        echohl OverwriteMsg
+        echon ' [Overwrite]'
+        echohl None
+    else
+        echon saveFile 
+    endif
+    echohl None
+endfunction
+hi OverwriteMsg cterm=bold ctermfg=1 ctermbg=194 
+nnoremap <silent> hf :call SaveFileWithBrowse()<CR>
+
+" -------------------------------------                    无文件缓冲区重命名
+" Usage:
+"       @er : 无文件缓冲区重命名
+" Tips: er=empty(buffer) rename, 即空文件缓冲区重命名
+function! RenameNoFileBuffer()
+    " 提示用户输入新的缓冲区名字
+    let newname = input('[Rename No-File Buffer] Enter new buffer name: ')
+    if newname != ''
+        " 获取原buffer名字
+        let oldname = bufname('%')
+        " 重新设置当前缓冲区的名字
+        execute 'file ' . newname
+        if oldname != ''
+            redraw!
+            " 使用 echon 和 echohl 在一行内显示所有信息，并对特定部分高亮
+            echo 'File renamed from '
+            echohl Search
+            echon oldname
+            echohl None
+            echon ' to '
+            echohl DiffAdd
+            echon newname
+            echohl None
+        else
+            echon 'Rename to '
+            echohl DiffAdd
+            echon newname
+            echohl None
+        endif
+    else
+        echo 'Rename cancelled.'
+    endif
+endfunction
+nnoremap <silent> er :call RenameNoFileBuffer()<CR>
+
+" -------------------------------------                    文件缓冲区重命名
+" Usage:
+"       @re : 对已存在的文件重命名
 " Tips: 
-"       助记: nr=_n_ame _r_ename,即名字重命名
+"       助记: re=rename, 即重命名
 function! RenameFile()
     let old_name = expand('%')
-    let new_name = input('Enter new filename: ', expand('%'))
+    let new_name = input('[Rename File Buffer] Enter new filename: ', expand('%'))
     if new_name != '' && new_name != old_name
         exec ':w'  
         exec ':saveas ' . new_name
@@ -2537,6 +3265,9 @@ function! RenameFile()
         exec ':silent !rm ' . shellescape(old_name, 1) 
         redraw!
         " 使用 echon 和 echohl 在一行内显示所有信息，并对特定部分高亮
+        " Note: 使用echon替代echo来连续输出文本,而不会自动添加新行。
+        "       echohl用于设置接下来的文本高亮,直到遇到echohl None
+        "       重置为默认格式
         echo 'File renamed from '
         echohl Search
         echon old_name
@@ -2550,7 +3281,27 @@ function! RenameFile()
     endif
 endfunction
 
-nnoremap nr :call RenameFile()<CR>
+nnoremap <silent> re :call RenameFile()<CR>
+
+" -------------------------------------                    清空命令行的显示信息
+" Usage:
+"       @cl : 清空命令行的显示信息,cl=clear,清屏
+nnoremap <silent> cl :echo ""<CR>
+
+" -------------------------------------                    打开命令行窗口(可以用vi模式编辑命令行)
+" Usage:
+"       @hd : 打开命令行窗口,以vi模式编辑命令
+" 命令行历史窗口(即命令行窗口)高度
+set cmdwinheight=1
+nnoremap <silent> hd :<C-f>
+
+" -------------------------------------                    查看帮助文件txt文本中标题部分的内容
+" Usage:
+"       @en : 进入标题对应的内容
+"       @ne : 返回到标题
+" Tips: en=enter, 即进入
+nnoremap <silent> en <C-]>
+nnoremap <silent> ne <C-t>
 
 " -------------------------------------                    返回上一次光标所在行
 " Usage:
@@ -2562,8 +3313,25 @@ function! GoToLastCursorPosition()
     normal ``
 endfunction
 
-" 将 lr 键映射到这个函数
-nnoremap lr :call GoToLastCursorPosition()<CR>
+nnoremap <silent> lr :call GoToLastCursorPosition()<CR>
+
+" -------------------------------------                    光标后退/前进到历史位置
+" Note: Vim 的设计哲学是效率和实用性,因此它只在用户执行
+"       显著的跳转操作时更新跳转列表
+"       跳转命令:
+"           Ctrl-o (向后跳转): 移动到较早之前的位置
+"           Ctrl-i (向前跳转): 移动到较新的位置
+" Usage:
+"       @aj : 后退到上一次光标位置, a=at
+"       @ak : 前进到下一次光标位置
+nnoremap <silent> aj <C-o>
+nnoremap <silent> ak <C-i>
+
+" -------------------------------------                    跳转到匹配的括号
+" Usage:
+"       @bm : 将光标移动到括号上,按bm跳转到匹配的另一个括号
+"             bm=bracket match, 括号匹配
+nnoremap <silent> bm %
 
 
 " vim 配色笔记
@@ -2619,6 +3387,7 @@ nnoremap lr :call GoToLastCursorPosition()<CR>
 
 " vim tips
 " =============================================================================
+" Note: Q=Question, A=Answer, N=Note
 " 1. 查看vim映射键组合是否有其他绑定,使用verbose map命令, 例如查看a有哪些映射绑定:
 "       :verbose map a (加上verbose可以显示映射操作最后是由谁执行的)
 " 2. 查看当前的快捷键所绑定的函数,使用map命令,例如查看,h所绑定的函数:
@@ -2653,9 +3422,6 @@ nnoremap lr :call GoToLastCursorPosition()<CR>
 "    A: :verbose highlight Pmenu
 " 12.Q: vim如何查看帮助文件txt文本中标题部分的内容?
 "    A: ctr+]转到标题对应部分(已自定义映射为en),ctrl+t返回(已自定义映射为ne)
-nnoremap <silent> en <C-]>
-    " Tips: en=enter, 即进入
-nnoremap <silent> ne <C-t>
 " 13.Q: vim有些高亮组link到了其他高亮组,自定义配色无法生效
 "    A: 在Vim中,如果一个高亮组通过links命令链接到了另一个高亮组,那么
 "       它会继承被链接高亮组的所有属性, 如果你尝试直接修改ColorA的颜
@@ -2670,7 +3436,7 @@ nnoremap <silent> ne <C-t>
 " 14.Q: vim如何查看当前buffer的编号?
 "    A: :echo bufnr('%')
 " 15.Q: vim如何查看当前窗口的类型?
-"    A: echo &buftype
+"    A: echo &buftype 或者 set buftype?
 "       普通buffer为空,quickfix窗口为'quickfix'
 " 16.Q: vim如何查看当前窗口id?
 "    A: echo win_getid() 
@@ -2678,65 +3444,94 @@ nnoremap <silent> ne <C-t>
 "    A: echo winnr()
 " 18.Q: 查看buffer的窗口编号
 "    A: echo bufwinnr(bufnr), bufnr为buffer编号
+" 19.Q: 查看当前buffer状态是否已被修改
+"    A: echo &modified, 0未修改,1已修改
+" 20.Q: vim脚本中如何调用vim插件<Plug>开头的函数
+"    N: <Plug>映射是为了让插件的功能可以被用户自定义键绑定而设计的。通常,这些<Plug>映射不是直接用于命令行模式的命令,
+"       它们是为了在普通模式、插入模式或其他模式下使用的。如果你想在命令行模式下执行与 <Plug>(easymotion-j) 相关的动作,
+"       需要找到这个 <Plug> 映射背后的实际 Vim 脚本命令, 并直接调用那个命令。通常, 这可以通过查看插件的源代码来实现
+"    A: 例如,有如下映射:
+"           ,k <Plug>(easymotion-j)
+"       要在vim脚本中执行,k的动作,不能直接在命令行或脚本中执行:call <Plug>(easymotion-j),在插件源码中找到对应的vim函数,例如:
+"          +-------------------------------------------------------------------------------------------------------------+
+"          | vim-easymotion ❯ grep -r "<Plug>(easymotion-j)" .                                                           |      
+"          | ./t/easymotion_spec.vim: Expect maparg('<Plug>(easymotion-j)', 'n') ==# ':<C-U>¹call EasyMotion#JK(0,0)<CR>'|               
+"          +-------------------------------------------------------------------------------------------------------------+
+"       <Plug>(easymotion-j) 对应的vim函数实际为 call EasyMotion#JK(0,0),所以在命令行或者vim脚本中可以直接执行call EasyMotion#JK(0,0)
+"       [注¹]: <C-U> 是一个控制字符,用于在命令行模式中清除当前行。在实际使用时,不需要包括 <C-U>，可以直接执行
+" 21.Q: vim临时取消某个映射,例如取消gn映射,将其映射为一个空操作
+"    A: nnoremap gn <Nop>
 
 
 
 
-let g:org_agenda_files=['~/org/index.org']
-
-" airline_x_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_x_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_x_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-" airline_y_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_y_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_y_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-" airline_z_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_z_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_z_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-" airline_term_inactive xxx ctermfg=85 ctermbg=232 guifg=#9cffd3 guibg=#202020
-" airline_term_inactive_bold xxx cterm=bold ctermfg=85 ctermbg=232 gui=bold guifg=#9cffd3 guibg=#202020
-" airline_term_inactive_red xxx ctermfg=231 ctermbg=232 guifg=#ffffff guibg=#202020
-" airline_error_inactive xxx ctermfg=232 ctermbg=160 guifg=#000000 guibg=#990000
-" airline_error_inactive_bold xxx cterm=bold ctermfg=232 ctermbg=160 gui=bold guifg=#000000 guibg=#990000
-" airline_error_inactive_red xxx ctermfg=231 ctermbg=160 guifg=#ffffff guibg=#990000
-" airline_a_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_a_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_a_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-" airline_b_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_b_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_b_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-" airline_c_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
-" airline_c_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
-" airline_c_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
-
-
-
-
-" 加载 Tree-sitter Context 插件配置
-lua <<EOF
-require'treesitter-context'.setup{
-  enable = true,
-  max_lines = 0,
-  min_window_height = 0,
-  line_numbers = true,
-  multiline_threshold = 20,
-  trim_scope = 'outer',
-  mode = 'cursor',
-  separator = nil,
-  zindex = 20,
-  on_attach = nil,
-}
-EOF
-        
-
-
-
-
-" 在状态栏显示当前光标位置的语法结构，基于 Tree-sitter 的解析树。这里的 90 是一个参数，表示状态栏显示的最大长度（单位为字符）
-" 参数 90 指定了状态栏信息的最大长度。这意味着无论语法结构的实际长度如何，显示在状态栏的字符串将被截断，不超过90个字符
-" echo nvim_treesitter#statusline(90) " 90 can be any length
-" module->expression_statement->call->identifier
-
+" TODO:
+" 1. org配置
+     "let g:org_agenda_files=['~/org/index.org']
+" 2. 状态栏非活动窗口状态栏前景色
+"     airline_x_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_x_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_x_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+"     airline_y_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_y_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_y_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+"     airline_z_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_z_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_z_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+"     airline_term_inactive xxx ctermfg=85 ctermbg=232 guifg=#9cffd3 guibg=#202020
+"     airline_term_inactive_bold xxx cterm=bold ctermfg=85 ctermbg=232 gui=bold guifg=#9cffd3 guibg=#202020
+"     airline_term_inactive_red xxx ctermfg=231 ctermbg=232 guifg=#ffffff guibg=#202020
+"     airline_error_inactive xxx ctermfg=232 ctermbg=160 guifg=#000000 guibg=#990000
+"     airline_error_inactive_bold xxx cterm=bold ctermfg=232 ctermbg=160 gui=bold guifg=#000000 guibg=#990000
+"     airline_error_inactive_red xxx ctermfg=231 ctermbg=160 guifg=#ffffff guibg=#990000
+"     airline_a_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_a_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_a_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+"     airline_b_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_b_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_b_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+"     airline_c_inactive xxx ctermfg=59 ctermbg=23 guifg=#4e4e4e guibg=#002b2b
+"     airline_c_inactive_bold xxx cterm=bold ctermfg=59 ctermbg=23 gui=bold guifg=#4e4e4e guibg=#002b2b
+"     airline_c_inactive_red xxx ctermfg=231 ctermbg=23 guifg=#ffffff guibg=#002b2b
+" 3. undotree diff颜色高亮配置
+"     function! ToggleHighlightForDiff()
+"         " 获取当前窗口的名字
+"         let l:winname = win_gettype()
+"
+"         " 检查窗口名是否为 'diff'
+"         if l:winname == 'diff'
+"             " 执行 TSBufToggle highlight
+"             execute 'TSBufToggle highlight'
+"         endif
+"     endfunction
+"
+"     " 设置自动命令，在每次窗口改变时调用上面的函数
+"     autocmd WinEnter * call ToggleHighlightForDiff()
+" 4. 打开qf列表,显示位置字符后,按字符进行跳转
+"     nnoremap m/ :<C-U>call signature#mark#List(0, 0)<CR>:let g:trigger_enter_in_quickfix = 1<CR><Plug>(easymotion-j)
+"     定义一个标志变量，用于判断是否需要在 quickfix 窗口中执行 Enter
+"     let g:trigger_enter_in_quickfix = 0
+"
+"     "autocmd CmdlineLeave * if g:trigger_enter_in_quickfix == 1 | execute "normal! \<CR>" | endif
+"        
+"     function! TriggerEnterInQuickfix()
+"         echo "world"
+"         let g:trigger_enter_in_quickfix = 1
+"      endfunction
+"
+"     function! SetupCursorMovedForQF()
+"         " if &ft == 'qf' && g:trigger_enter_in_quickfix == 1
+"         if &ft == 'qf'
+"             " 仅在当前缓冲区类型为 quickfix 时设置 CursorMoved 自动命令
+"             autocmd CursorMoved <buffer> call TriggerEnterInQuickfix()
+"         endif
+"     endfunction
+"     augroup QuickfixCursorMove
+"         autocmd!
+"         " 当进入任何窗口时调用 SetupCursorMovedForQF 函数
+"         autocmd WinEnter,BufWinEnter * call SetupCursorMovedForQF()
+"     augroup END
+" 5. man.vim使用tab打开man手册打开内容时设置buffer内容半屏显示
 
 
 
