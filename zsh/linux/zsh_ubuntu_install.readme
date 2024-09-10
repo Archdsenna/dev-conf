@@ -1,17 +1,21 @@
-Linux安装zsh环境
+Ubuntu安装zsh环境
 1. zsh
-   (1) 下载: sudo apt install zsh
-   (2) 设置为默认shell(不要加sudo): chsh -s /bin/zsh
-   (3) 重启并查看: echo $SHELL
+   (1) 下载: 
+        $ sudo apt install zsh
+   (2) 设置为默认shell(不要加sudo): 
+        $ chsh -s /bin/zsh
+         or
+        $ chsh -s $(which zsh)
+   (3) 重启并查看: 
+        $ echo $SHELL
    (4) 安装.oh-my-zsh
         (4.1) 下载.oh-my-zsh:
                 $ git clone https://github.com/ohmyzsh/ohmyzsh.git
-        (4.2) 
+        (4.2) 执行install.sh
+                $ ohmyzsh/tools/install.sh
    (4) 拷贝zsh配置文件.zshrc到~目录
         先 clone dev-conf仓库
             $ git clone https://github.com/Archdsenna/dev-conf.git
         将dev-conf/zsh/linux/.zshrc直接拷贝到~/目录下即可
             $ cp .zshrc ~/
    (5) 更新zsh配置: source .zshrc
-
-2. oh-my-zsh
