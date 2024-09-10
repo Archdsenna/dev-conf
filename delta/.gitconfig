@@ -1,4 +1,4 @@
-# delta的配置
+# delta的配置, 将本文件内容追加在~/.gitconfig中
 [core]
     pager = delta
 
