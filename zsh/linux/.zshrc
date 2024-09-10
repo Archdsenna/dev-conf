@@ -342,7 +342,7 @@ export EDITOR='nvim'
 # crontab等, 会使用这个变量来决定调用哪个编辑器)
 export VISUAL='nvim'
 
-# for nvm to install Nodejs
+# Ubuntu for nvm to install Nodejs
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
