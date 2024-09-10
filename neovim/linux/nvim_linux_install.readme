@@ -1,9 +1,11 @@
 nvim 在 linux 的配置过程:
-    1. 安装neovim
+    1. 安装neovim (见下面linux 安装 nvim 及其依赖)
     2. clone dev-conf仓库
         $ git clone https://github.com/Archdsenna/dev-conf.git
-    3. 将dev-conf/neovim/的nvim目录直接拷贝到~/.config/目录下即可
-        $ cp nvim ~/.config/
+    3. 将dev-conf/neovim/的nvim目录直接拷贝到~/.config/目录下
+        $ cp -r nvim ~/.config/
+    4. 将dev-conf/neovim/init.vim/linux的init.vim文件拷贝到~/.config/nvim/目录下,在dev-conf/neovim/下执行:
+        $ cp init.vim/linux/init.vim ~/.config/nvim/
 
 linux 安装 nvim 及其依赖
 " =============================================================================
@@ -12,8 +14,24 @@ linux 安装 nvim 及其依赖
     $ sudo apt update
     $ sudo apt install neovim
 
+" -------------------------------------                    lua
+1. 官网安装最新的版本: https://www.lua.org/download.html
+    curl -L -R -O https://www.lua.org/ftp/lua-5.4.7.tar.gz
+    tar zxf lua-5.4.7.tar.gz
+    cd lua-5.4.7
+    make all test
+
+" -------------------------------------                    python3
+1. 安装
+    $sudo apt install python3
+
+" -------------------------------------                    NodeJS(coc的依赖)
+1. 参考官网安装: 
+    https://nodejs.org/en/download/package-manager
+
 " -------------------------------------                    xsel剪贴板工具(vim-systemy-copy的依赖)
    Q: nvim无法与ubuntu的系统剪贴版进行交互,checkhealth发现
       缺少系统剪贴板工具
    A: 安装剪贴板工具xsel,使用如下命令
       $  sudo apt install xsel
+
