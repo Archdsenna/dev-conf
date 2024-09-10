@@ -4,11 +4,11 @@
   "diagnostic.infoSign": "ⵢ",
   "diagnostic.signPriority": 1,
   "coc.preferences.jumpCommand": "vsp",
-  "suggest.noselect": true,                                     // 补全开启时不要默认选中第一项
+  "suggest.noselect": true,                // 补全开启时不要默认选中第一项
   "suggest.autoTrigger": "always",
   "suggest.selection": "recentlyUsed",
   "suggest.timeout": 500,
   "suggest.detailField": "preview",
-  "semanticTokens.enable": true,
-  "suggest.triggerAfterInsertEnter": true,                      // 进入插入模块即触发自动补全
+  "semanticTokens.enable": true,           // 开启语义标记功能(会提供作用域的高亮),例如会把#ifdef...#endif之间的内容,按注释进行高亮,因为这部分代码是条件触发代码
+  "suggest.triggerAfterInsertEnter": true, // 进入插入模块即触发自动补全
 }

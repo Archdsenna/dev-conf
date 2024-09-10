@@ -2302,7 +2302,8 @@ hi @keyword.conditional ctermfg=126 " if/else/case/switch
 " ] @keyword.directive
 hi @keyword.directive ctermfg=6
 hi @keyword.directive.define ctermfg=126 " #define" @keyword.directive.define
-hi @keyword.repeat.c ctermfg=124
+" 循环关键词(for、while)颜色 
+hi @keyword.repeat.c ctermfg=89
 
 hi @type ctermfg=2      " typedef定义的类型等
 hi @property ctermfg=66 " field_identifier,即字段名(结构体成员)
