@@ -1,4 +1,4 @@
-# Insert your preferred key mappings here.
+" -------------------------------------                                 Custom key mappings
 # Insert your preferred key mappings here.
 map j scrollUp
 map k scrollDown
@@ -19,7 +19,7 @@ map eh scrollToLeft
 map el scrollToRight
 map d LinkHints.activateModeToDownloadLink
 
-
+" -------------------------------------                                 CSS for Vimium UI
 div > .vimiumHintMarker {
 /* linkhint boxes */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),
@@ -70,3 +70,4 @@ div > .vimiumHintMarker > .matchingCharacter {
   color: #af0000;
   font-weight: bold;
 }
+

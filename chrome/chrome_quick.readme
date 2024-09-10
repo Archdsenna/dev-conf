@@ -86,3 +86,8 @@ Usage:
         @J : 上移半屏
         @K : 下移半屏
 
+chrome 使用问题
+" =============================================================================
+1. Q: Chrome升级到128版本后,标签页左侧余留空白
+   A: 打开 chrome://flags/, 将 Immersive Fullscreen Toolbar 设置为 Disable
+
