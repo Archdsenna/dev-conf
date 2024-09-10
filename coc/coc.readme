@@ -10,7 +10,7 @@
             coc-clangd          [已安装]
             coc-json            [已安装]
             coc-go              [已安装]
-            coc-ultisnips       [已安装] Note: 自动补全提供UltiSnips格式(snipMate插件使用的代码片段格式,更简洁)的代码片段候选
+            coc-ultisnips       [未安装] Note: 自动补全提供UltiSnips格式(snipMate插件使用的代码片段格式,更简洁)的代码片段候选
             coc-vim-snippets    [已安装] Note: 自动补全提供snipMate(UltiSnips 插件使用的代码片段格式,提供了更多高级功能和更灵活的代码片段定义方式)格式的代码片段候选
             coc-vimlsp          [已安装]
             coc-sh              [已安装] 脚本lsp
