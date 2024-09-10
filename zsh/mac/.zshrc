@@ -91,12 +91,19 @@ zstyle ':vcs_info:git:*' formats '(%b)'
 
 # -------------------------------------                    vi-mode配置
 # Usage:
-#       @jk : 插入模式下返回Normal模式
-#       @aa : 到行首
-#       @ee : 到行尾
-#       @ai : 到行首,并进入插入模式
-#       @ei : 到行尾,并进入插入模式
-#       @vv : Normal模式下按vv进入nvim编辑当前命令
+#       @jk     : 插入模式下返回Normal模式
+#       @aa     : 到行首
+#       @ee     : 到行尾
+#       @ai     : 到行首,并进入插入模式
+#       @ei     : 到行尾,并进入插入模式
+#       @v      : 进入可视模式选中
+#       @y      : 复制
+#       @p      : 粘贴
+#       @si     : Normal下,清空光标到行尾内容,并进入插入模式
+#       @ds     : Normal下,清空光标到行尾内容
+#       @ys     : Normal下,复制光标到行尾内容
+#       @空格+i : Normal下,清空整行,并进入插入模式
+#       @vv     : Normal模式下按vv进入nvim编辑当前命令
 # Note: 其他用法与vim一致
 
 # 组合键等待延迟(200ms)
@@ -130,6 +137,44 @@ bindkey -M vicmd 'ai' vi-beginning-of-line-insert
 bindkey -M vicmd 'ee' end-of-line
 # ei:到行尾并进入插入模式
 bindkey -M vicmd 'ei' vi-end-of-line-insert
+
+# 在 Vim normal 模式下，设置 si 为清空光标到行尾内容并进入插入模式
+# 定义一个新的 ZLE 小部件来清空光标到行尾的内容并进入插入模式
+delete-to-end-and-insert() {
+    zle kill-line
+    zle vi-insert
+}
+zle -N delete-to-end-and-insert
+bindkey -M vicmd 'si' delete-to-end-and-insert
+
+# 设置空格+i为清空当前行,并进入插入模式
+# 定义一个函数来处理空格后的按键
+function space-followed-by-i() {
+    # 读取接下来的一个字符
+    local key
+    read -k 1 key
+
+    # 判断这个字符
+    if [[ "$key" == "i" ]]; then
+        # 如果是 'i'，执行想要的操作，例如删除整行并进入插入模式
+        zle kill-whole-line
+        zle vi-insert
+    else
+        # 如果不是 'i'，可以选择什么都不做，或者处理其他按键
+        # 这里可以通过模拟按键来恢复原本的行为
+        zle send-break
+    fi
+}
+# 注册这个函数为 ZLE (Zsh Line Editor) widget
+zle -N space-followed-by-i
+# 在 Vim 的 normal 模式下绑定空格键到这个 widget
+bindkey -M vicmd ' ' space-followed-by-i
+
+# 绑定 'ds' 在vi命令模式下删除到行尾
+bindkey -M vicmd 'ds' vi-kill-eol
+
+# 绑定 'ys' 在vi命令模式下,复制光标到行尾的内容
+bindkey -M vicmd 'ys' vi-yank-eol
 
 # 设置vi-mode可视模式下选中文本的背景颜色(浅绿)
 zle_highlight=(region:bg=151)
@@ -249,6 +294,14 @@ export PATH="/opt/homebrew/opt/llvm/bin:$PATH"   # only for mac, need to check
 PS1="%{$fg[blue]%}%1~%{$reset_color%} %{$fg[red]%}❯%{$reset_color%} "
 
 # -------------------------------------                    别名设置
+# Usage:
+#   @vim : 打开nvim
+#   @y   : 打开yazi
+#   @cp  : cp命令(显示进度条)
+#   @mv  : mv命令(显示进度条)
+#   @man : 用vim打开man手册内容
+#   @ht  : 打开tmux,执行终端的倒数第二条命令,进入copy模式
+#          Tips: 助记,ht=history tmux
 alias vim='nvim'
 alias y='/usr/local/bin/yazi'
 alias cp='/usr/local/bin/cp -g'
@@ -257,6 +310,22 @@ alias mv='/usr/local/bin/mv -g'
 alias python='/usr/bin/python3'         # only for mac, need to check
 alias make='/opt/homebrew/bin/gmake'    # only for mac, need to check
 
+# vim打开man页面
+function vim_man_open() {
+    # 因为 man 命令在别名中被重定义为vim_man_open, 从而在调用
+    # man -w 时实际上又调用了vim_man_open,形成了无限递归,所以
+    # 使用 \man 来绕过别名,直接调用原始的 man 命令
+    local man_path=$(\man -w "$@" 2>/dev/null)
+    if [ -n "$man_path" ]; then
+        vim -c "ManOpenOnly $man_path"
+    else
+        echo "No man entry for $@"
+    fi
+}
+alias man='vim_man_open'
+
+# sleep 0.3,执行命令后等待300ms,确保命令有足够的时间执行并显示结果,再进入copy模式,
+alias ht="tmux new-session \; send-keys 'clear' C-m \; send-keys \"\$(fc -ln -2 | tail -n 1)\" C-m \; run-shell 'sleep 0.3' \; copy-mode"
 
 # -------------------------------------                    默认文本编辑器
 # 设置默认的文本编辑器为nvim
@@ -265,5 +334,6 @@ export EDITOR='nvim'
 # 设置默认的图形界面编辑器为nvim(许多命令行程序,如git、
 # crontab等, 会使用这个变量来决定调用哪个编辑器)
 export VISUAL='nvim'
+
 
 
