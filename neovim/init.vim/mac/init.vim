@@ -1,3 +1,5 @@
+" Mac
+
 " vim 动词(动词表示对文本的操作)
 " +----------+----------+--------------------------------------------------------+
 " |d         |delete    |删除(不会进插入模式)                                    |
@@ -326,12 +328,12 @@
 " 步骤:
 "   1. 系统需要先完成安装python3
 "       $ brew install python3
-"   2. 安装nvim自带的python支持
+"   2. 安装nvim自带的python支持(Neovim与Python交互需要安装pynvim(之前称为neovim)库)
 "       2.1 因为mac不允许直接通过pip方式下载python组件以防止损坏系统环境,所以通过python的虚拟环境完成下载,如下:
-"           $ python3 -m venv ~/.venv           " 创建一个python虚拟环境
-"           $ source ~/.venv/bin/activate       " 激活虚拟环境
-"           $ python3 -m pip install neovim     " 下载nvim的python支持
-"           $ which python3                     " 在虚拟环境中查看python3的安装路径
+"           $ python3 -m venv ~/.venv               " 创建一个python虚拟环境
+"           $ source ~/.venv/bin/activate           " 激活虚拟环境
+"           $ python3 -m pip install neovim(pynvim) " 下载nvim的python支持
+"           $ which python3                         " 在虚拟环境中查看python3的安装路径
 "           $ 在init.vim中将python3安装路径赋值给g:python3_host_prog变量
 let g:python3_host_prog = '~/.venv/bin/python3'
 
@@ -1836,7 +1838,7 @@ set foldexpr=v:lua.vim.treesitter.foldexpr()
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  -- 需要安装的语言解析器的列表,这些语言的解析器将被安装
+  -- 需要安装的语言解析器的列表,这些语言的解析器将被安装(这里的设置主要用于首次启动nvim-treesitter时安装)
   ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
   -- 当设置为 false 时，表示解析器的安装将是异步的，即不会阻塞 Neovim 的其他操作
   sync_install = false,
@@ -2437,6 +2439,21 @@ map <silent> <S-l> 5<Right>
 " Tips: 
 "       1. 快速滚动到目标区域附近后，通过j、k以单行向上、下移动
 "       2. 以下设置在所有模式下都生效
+"       3. 加速vim方向键移动, 需修改mac设置, 方法如下
+"          ● Mac: 系统偏好设置 -> 键盘 -> 调整"键重复速率"
+"            和"重复前延迟"滑块, 将"键重复速率"设置为最快, 
+"            "重复前延迟"设置为最短
+"          ● [⚠️ ] Mac自带的'简体拼音'输入法在修改此设置后, 
+"                 存在偶发性失效的问题, 因此改用'搜狗拼音'
+"                 输入法), 具体设置如下:
+"                 (1) 在键盘->输入法 设置中, 关闭'使用大写
+"                     锁定键切换"ABC"输入法'
+"                 (2) 下载'搜狗拼音'输入法,并在Mac输入法中
+"                     添加,添加方法:
+"                     系统设置->键盘->输入法->按+号->简体中文,
+"                     选择'搜狗拼音'(当搜狗拼音安装完成后,
+"                     会在简体中文中显示)
+
 map <silent> j <Up>
 map <silent> k <Down>
 
@@ -2646,16 +2663,23 @@ endfunction
 map <silent> hi :call HistoryReverse()<CR>
 
 " -------------------------------------                    输入法自动切换英文
-" Note: 
-"       (1) 工具地址: https://github.com/daipeihust/im-select
-"       (2) 安装:(安装好后可以在/usr/local/bin中找到工具)
-"               $ brew tap daipeihust/tap
-"               $ brew install im-select
-"           然后在init.vim中添加下面的语句:
-"               autocmd ModeChanged *:n,*:v silent !im-select 输入法名
+" Note: 由于改用'搜狗拼音'输入法(原因见:单行移动:3. 加速vim方向键移动)
+"       此处需同时设置切换到'搜狗拼音'输入法的英文模式,具体如下:
+"       (1) 安装:
+"               ① 搜狗拼音
+"               ② 搜狗输入法切换助手(Mac App即可下载)
+"       (2) 设置:
+"               ① 搜狗拼音: 
+"                 ⓵ 偏好设置->常用->默认状态->中英文,改为'英文'
+"                 ⓶ 高级->智能输入->自动切换到英文状态,选中此项
+"               ② 搜狗输入法切换助手
+"                 ⓵ 偏好设置->自动切换设置->终端->搜狗拼音默认状态->英文
            
-" Normal/Visual模式自动切换到英文输入法
-autocmd ModeChanged *:n,*:v silent !im-select com.apple.keylayout.ABC
+" Normal/Visual模式自动切换到英文输入法(当前Mac已设置'搜狗拼音'
+" 为首选输入法,默认状态为英文,即会切换到搜狗拼音的英文输入模式),
+" 方式: 使用osascript执行AppleScript,该脚本会找到系统菜单栏中的输入法
+"       切换图标,并选择搜狗拼音输入法
+autocmd ModeChanged *:n,*:v silent !osascript -e 'tell application "System Events" to tell process "SystemUIServer" to tell (1st menu bar item of menu bar 1 whose description is "text input") to {click, click (1st menu item whose title is "搜狗拼音") of menu 1}'
 
 " -------------------------------------                    Esc键快捷映射
 " 将 'jk' 映射为 'Esc' 在插入模式和可视模式下
@@ -3533,6 +3557,22 @@ nnoremap <silent> bm %
 "         autocmd WinEnter,BufWinEnter * call SetupCursorMovedForQF()
 "     augroup END
 " 5. man.vim使用tab打开man手册打开内容时设置buffer内容半屏显示
+" 6. nvim代码截屏到剪贴板/保存到指定位置
+"    候选插件: 
+"       (1) SergioRibera/codeshot.nvim
+"       (2) mistricky/codesnap.nvim
+"
+"     lua << EOF
+"     require('codeshot').setup{
+"       bin_path = '/opt/homebrew/bin/sss_code', -- Path to the binary
+"       -- ...
+"       }
+"
+"     -- Key mappings for taking screenshots
+"     vim.keymap.set('v', 'sc', ":SSSelected<CR>", {silent = true})
+"     vim.keymap.set('v', '<Leader>sf', ":SSFocused<CR>", {silent = true})
+"     EOF
+
 
 
 
