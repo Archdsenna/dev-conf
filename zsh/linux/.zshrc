@@ -35,7 +35,6 @@ zstyle ':omz:update' frequency 5
 plugins=(
     # ------------ zsh内置
 	git                         # 显示git分支                              
-	autojump                    # 快速转到之前进入过的目录
     vi-mode                     # zsh使用vim模式            
     copypath                    # 拷贝路径                  
     copyfile                    # 拷贝文件内容              
@@ -43,9 +42,9 @@ plugins=(
     z                           # 快速跳转到目录
 
     # ------------ 第三方插件
-	zsh-autosuggestions         # 输入时显示历史命令提示
-    zsh-syntax-highlighting     # 错误命令提示(错误:红色,正确:绿色)
     fzf-tab                     # 增强tab显示候选项
+	zsh-autosuggestions         # 输入时显示历史命令提示
+    # zsh-syntax-highlighting     # 错误命令提示(错误:红色,正确:绿色), [源码形式安装,脚本已在.zshrc中添加]
 )
 
 source $ZSH/oh-my-zsh.sh        # 不要移动这句的位置
@@ -244,9 +243,14 @@ function vf(){
     fi
 }
 
+# -------------------------------------                    zsh-syntax-highlighting
+source ~/.oh-my-zsh/custom/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # -------------------------------------                    fzf-tab
 # Dependance: 需要安装的依赖工具
-#       @eza
+#       1. eza : eza是一个命令行工具,用于在终端中以优雅的方式
+#                显示目录和文件的列表。它通常用于提供比传统ls
+#                命令更丰富的视觉输出
 # Usage:
 #       @cd+Tab   : 显示目录里的子目录/文件(依赖eza)
 #       @/        : 进入目录
@@ -293,9 +297,12 @@ zstyle ':fzf-tab:*' fzf-flags '--height=70%'
 # zsh自定义配置
 # =============================================================================
 # -------------------------------------                    终端提示符
+# Note:
+#   %m : 表示主机名
 # 这里使用了%{$fg[green]%}来设置%n的颜色为绿色，然后
 # 使用%{$reset_color%}来重置颜色，确保后续内容不受影响
-PS1="%{$fg[blue]%}%1~%{$reset_color%} %{$fg[red]%}❯%{$reset_color%} "
+PS1="%{$fg[green]%}%m#%{$reset_color%} %{$fg[blue]%}%1~%{$reset_color%} %{$fg[red]%}❯%{$reset_color%} "
+
 
 # -------------------------------------                    别名设置
 # Usage:
@@ -308,11 +315,11 @@ PS1="%{$fg[blue]%}%1~%{$reset_color%} %{$fg[red]%}❯%{$reset_color%} "
 #          Tips: 助记,ht=history tmux
 alias vim='nvim'
 alias y='/usr/local/bin/yazi'
-alias cp='/usr/local/bin/cp -g'
-alias mv='/usr/local/bin/mv -g'
+alias cp='/usr/local/bin/advcp -g'
+alias mv='/usr/local/bin/advmv -g'
 
 alias bat='/usr/local/bin/bat'            # only for ubuntu
-
+alias fd='/usr/local/bin/fd'
 
 # alias python='/usr/bin/python3'         # only for mac, need to check
 # alias make='/opt/homebrew/bin/gmake'    # only for mac, need to check
@@ -324,7 +331,7 @@ function vim_man_open() {
     # 使用 \man 来绕过别名,直接调用原始的 man 命令
     local man_path=$(\man -w "$@" 2>/dev/null)
     if [ -n "$man_path" ]; then
-        vim -c "ManOpenOnly $man_path"
+        nvim -c "ManOpenOnly $@"
     else
         echo "No man entry for $@"
     fi
@@ -342,7 +349,33 @@ export EDITOR='nvim'
 # crontab等, 会使用这个变量来决定调用哪个编辑器)
 export VISUAL='nvim'
 
+# -------------------------------------                    nvm(安装Nodejs)
 # Ubuntu for nvm to install Nodejs
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# -------------------------------------                    cargo
+export PATH="$PATH:$HOME/.cargo/bin" 
+
+# -------------------------------------                    sphinx
+# Note: 生成man文档的工具
+export PATH="$PATH:$HOME/.local/bin"
+# 让Python找到sphinx包
+export PYTHONPATH="$PYTHONPATH:$HOME/.local"
+
+# -------------------------------------                    xsel
+# Note: 用于在 X11 环境中操作剪贴板内容。它允许用户从命令行界面
+#       获取或设置剪贴板 (clipboard)、主选择(primary selection)
+#       和副选择(secondary selection)的内容
+export DISPLAY=:0.0
+
+
+# Tips
+# 1. Q: 如何查看source .zshrc的执行过程,哪些命令耗时较长,从而进行针对性的优化
+#    A: 使用zsh -xv 命令来跟踪。退出zsh -xv模式: 直接输入exit后按Enter, 另一个快速退出的方法是使用快捷键 Ctrl+D,
+#       这个快捷键在大多数Unix和Linux终端中用于发送EOF(文件结束标记),它会告诉shell没有更多的输入,从而结束当前会话
+
+
+
+

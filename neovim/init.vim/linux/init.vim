@@ -1,3 +1,5 @@
+" Ubuntu
+
 " vim 动词(动词表示对文本的操作)
 " +----------+----------+--------------------------------------------------------+
 " |d         |delete    |删除(不会进插入模式)                                    |
@@ -321,19 +323,18 @@
 " +----------+----------+------------+--------+--------+
 " 
 
-" mac nvim支持python3
+" ubuntu nvim支持python3
 " =============================================================================
 " 步骤:
 "   1. 系统需要先完成安装python3
-"       $ brew install python3
-"   2. 安装nvim自带的python支持
-"       2.1 因为mac不允许直接通过pip方式下载python组件以防止损坏系统环境,所以通过python的虚拟环境完成下载,如下:
-"           $ python3 -m venv ~/.venv           " 创建一个python虚拟环境
-"           $ source ~/.venv/bin/activate       " 激活虚拟环境
-"           $ python3 -m pip install neovim     " 下载nvim的python支持
-"           $ which python3                     " 在虚拟环境中查看python3的安装路径
-"           $ 在init.vim中将python3安装路径赋值给g:python3_host_prog变量
-let g:python3_host_prog = '~/.venv/bin/python3'
+"       $ sudo apt install python3 python3-pip
+"   2. 查看python3的安装路径
+"       $ which python3                     
+"   3. 在init.vim中将python3安装路径赋值给g:python3_host_prog变量
+let g:python3_host_prog = '/usr/bin/python3'
+
+"   4. 安装nvim自带的python支持(Neovim与Python交互需要安装pynvim(之前称为neovim)库)
+"       $ python3 -m pip install neovim     " 下载nvim的python支持
 
 " 通用配置
 " =============================================================================
@@ -2122,6 +2123,47 @@ hi TermCursor ctermbg=NONE ctermfg=darkred
 " 第一个光标颜色(此问题属于nvim问题,还未修复)
 hi Cursor ctermbg=166 ctermfg=166
 
+" -------------------------------------                    vim系统剪贴板
+" 启用Vim的剪贴板集成
+if executable('xsel')
+  " unnamedplus选项使得Vim使用系统的剪贴板(通常是X11的剪贴板),这样在Vim中复制的内容可以在其他程序中粘贴,反之亦然。
+  set clipboard+=unnamedplus
+endif
+
+" 设置具体的命令来操作系统剪贴板,即定义Vim如何通过xsel命令与系统剪贴板交互, 
+" 它设置了复制和粘贴的具体命令,分别对应系统的剪贴板(clipboard)和主选择(primary)。
+" 这样，无论是从Vim复制内容到外部程序,还是从外部程序粘贴内容到Vim,都能通过这些命令来实现
+" 命令解释: 
+"   复制
+"   (1) xsel --nodetach --input --clipboard
+"       使用xsel命令将文本复制到系统的剪贴板(通常用于跨应用复制粘贴)
+"       --nodetach  : 选项使xsel在后台运行,
+"       --input     : 指定xsel从标准输入接收数据，
+"       --clipboard : 指定操作的是剪贴板
+"   (2) xsel --nodetach --input --primary
+"       将文本复制到 X11 的 primary buffer(通常用于鼠标中键粘贴)
+"
+"   粘贴
+"   (1) xsel --output --clipboard
+"       使用xsel命令从系统剪贴板获取文本
+"       --output    : 指定xsel输出数据到标准输出，
+"       --clipboard : 指定操作的是剪贴板
+"   (2) xsel --output --primary
+"       从 X11 的 primary buffer 获取文本
+let g:clipboard = {
+    \   'name': 'xsel',
+    \   'copy': {
+    \      '+': 'xsel --nodetach --input --clipboard',
+    \      '*': 'xsel --nodetach --input --primary',
+    \    },
+    \   'paste': {
+    \      '+': 'xsel --output --clipboard',
+    \      '*': 'xsel --output --primary',
+    \    },
+    \   'cache_enabled': 1,
+    \ }
+
+
 " 自定义vim颜色配置
 " `````````````````````````````````````````````````````````````````````````````
 " -------------------------------------                    vim区域配色
@@ -3533,6 +3575,4 @@ nnoremap <silent> bm %
 "         autocmd WinEnter,BufWinEnter * call SetupCursorMovedForQF()
 "     augroup END
 " 5. man.vim使用tab打开man手册打开内容时设置buffer内容半屏显示
-
-
 
