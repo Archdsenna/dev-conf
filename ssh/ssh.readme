@@ -1,0 +1,14 @@
+在Ubuntu系统中创建SSH密钥对:
+
+1. 生成SSH密钥对
+        $ ssh-keygen -t rsa -b 4096    " -t rsa 指定密钥类型为RSA, -b 4096 指定密钥长度为4096位
+   默认的保存位置为: ~/.ssh/id_rsa
+2. 查看公钥: 生成密钥后, 可以查看公钥内容, 以便将其添加到SSH服务器或其他服务中:
+        $ cat ~/.ssh/id_rsa.pub
+3. 复制公钥到服务器: 可以使用 ssh-copy-id 命令将公钥复制到服务器的 ~/.ssh/authorized_keys 文件中,以便无密码登录
+        $ ssh-copy-id username@hostname
+
+注: 如果是将SSH公钥添加到GitHub, ssh-copy-id 并不适用。GitHub不支持通过SSH直接添加公钥。需要手动将公钥添加到GitHub账户:
+4. 使用GitHub
+   打开并复制你的公钥：
+        $ cat ~/.ssh/id_rsa.pub
