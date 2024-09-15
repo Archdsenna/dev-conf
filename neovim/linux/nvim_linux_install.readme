@@ -17,17 +17,32 @@ Ubuntu 安装 neovim
         $ python3 -m pip install neovim         
 
 " -------------------------------------                    NodeJS(coc.vim的依赖)
-1. # installs nvm (Node Version Manager)
+1. 安装nvm (Node Version Manager)
         $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 
-   # download and install Node.js (you may need to restart the terminal)
+   download and install Node.js (you may need to restart the terminal)
         $ nvm install 20
 
-   # verifies the right Node.js version is in the environment
+   verifies the right Node.js version is in the environment
         $ node -v # should print `v20.17.0`
 
-   # verifies the right npm version is in the environment
+   verifies the right npm version is in the environment
         $ npm -v # should print `10.8.2`
+
+  *拷贝npm的源配置文件,在 dev-conf 目录下执行:
+        $ cp coc/npm/.npmrc ~/
+
+" -------------------------------------                    clangd(coc.vim的依赖)
+1. 添加LLVM的官方APT源到系统中
+        $ wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+   添加APT源
+        $ echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" | sudo tee /etc/apt/sources.list.d/llvm.list
+   更新软件包列表:
+        $ sudo apt update
+   查询最新的clangd版本
+        $ sudo apt-cache search clangd
+   下载clangd
+        $ sudo apt install clangd-20
 
 " -------------------------------------                    xsel剪贴板工具(vim-systemy-copy的依赖)
    Q: nvim无法与ubuntu的系统剪贴版进行交互,checkhealth发现
