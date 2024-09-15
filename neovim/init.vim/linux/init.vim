@@ -272,7 +272,7 @@
 " +----------+-------------------------------------------------------------------+
 " |lr        |返回上一次光标所在行                                               |
 " +----------+-------------------------------------------------------------------+
-" |aj / ak   |光标跳转到上/下一个历史编辑位置,a=at                               |
+" |aj / ak   |光标跳转到上/下一个历史位置,a=at                                   |
 " +----------+-------------------------------------------------------------------+
 " |bn        |新建无文件缓冲区并命名,bn=buffer new                               |
 " +----------+-------------------------------------------------------------------+
@@ -1837,7 +1837,7 @@ set foldexpr=v:lua.vim.treesitter.foldexpr()
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  -- 需要安装的语言解析器的列表,这些语言的解析器将被安装
+  -- 需要安装的语言解析器的列表,这些语言的解析器将被安装(这里的设置主要用于首次启动nvim-treesitter时安装)
   ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
   -- 当设置为 false 时，表示解析器的安装将是异步的，即不会阻塞 Neovim 的其他操作
   sync_install = false,
@@ -2504,7 +2504,7 @@ nnoremap <silent> ai I
 nnoremap <silent> ei A
 inoremap <silent> ei <Esc>A
 
-" -------------------------------------                    "注释快速编辑: 
+" -------------------------------------                    "注释快速编辑 
 " Usage:
 "       @as     : 光标回行首+删除第一个字符+进入插入模式
 "                 [适用]: 有注释如" abc, 要删除注释符,并且进入插入模式
@@ -2686,18 +2686,6 @@ function! HistoryReverse()
     silent! %!gtac
 endfunction
 map <silent> hi :call HistoryReverse()<CR>
-
-" -------------------------------------                    输入法自动切换英文
-" Note: 
-"       (1) 工具地址: https://github.com/daipeihust/im-select
-"       (2) 安装:(安装好后可以在/usr/local/bin中找到工具)
-"               $ brew tap daipeihust/tap
-"               $ brew install im-select
-"           然后在init.vim中添加下面的语句:
-"               autocmd ModeChanged *:n,*:v silent !im-select 输入法名
-           
-" Normal/Visual模式自动切换到英文输入法
-autocmd ModeChanged *:n,*:v silent !im-select com.apple.keylayout.ABC
 
 " -------------------------------------                    Esc键快捷映射
 " 将 'jk' 映射为 'Esc' 在插入模式和可视模式下
