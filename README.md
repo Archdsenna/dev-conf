@@ -1,5 +1,12 @@
-zsh, tmux, vim, vscode Configuration
+配置文件状态跟踪: 是否最新, 是[√], 否[✗]
 
-vim 插件查询:
-- [Vim插件网](https://vim.hizdm.cn/)
-- [vim插件汇总](https://vimawesome.com/)
+1. zsh    [√]
+2. fzf    [√]
+3. tmux   [√]
+4. yazi   [√]
+5. nvim   [√]
+6. vscode [√]
+7. mac-os [√]
+8. coc    [√]
+9. delta  [√]
+10.chrome [√]

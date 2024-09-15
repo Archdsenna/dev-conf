@@ -38,19 +38,23 @@ Usage:
 " -------------------------------------                    advcpmv
 Note: advcpmv安装方法:
         (1) 下载advcpmv仓库,执行里面的install.sh 
-                $ https://github.com/jarun/advcpmv
-            Note: 修改下install.sh里的部分内容后再执行(下载的advcpmv已经包含了path,install.sh里又下载了一遍,将下载语句注释掉即可)
+            (1.1) 下载:
+                    $ https://github.com/jarun/advcpmv.git
+                  Note: 修改下install.sh里的部分内容后再执行(下载的advcpmv已经包含了path,install.sh里又下载了一遍,将下载语句注释掉即可)
             
-            install.sh需修改的代码如下:          
-                # curl -LO https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
-                # patch -p1 -i advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
-                patch -p1 -i ../advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
+                  install.sh需修改的代码如下:          
+                      # curl -LO https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
+                      # patch -p1 -i advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
+                      patch -p1 -i ../advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
+            (1.2) 修改完后,执行install.sh
+                    $ chmod +x install.sh
+                    $ ./install.sh  
         (2) 将advcpmv/src目录下的cp和mv命令拷贝到/usr/local/bin中
-                $ sudo cp cp /usr/local/bin
-                $ sudo cp mv /usr/local/bin
+                $ sudo cp advcp /usr/local/bin
+                $ sudo cp advmv /usr/local/bin
         (3) 在.zshrc中添加别名:
-                alias cp='/usr/local/bin/cp -g'
-                alias mv='/usr/local/bin/mv -g'
+                alias cp='/usr/local/bin/advcp -g'
+                alias mv='/usr/local/bin/advmv -g'
         (4) 更新.zshrc
                 $ source .zshrc
 Usage:

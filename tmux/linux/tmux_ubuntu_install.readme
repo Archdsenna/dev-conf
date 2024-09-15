@@ -1,0 +1,15 @@
+ubuntu安装tmux
+
+1. 源码编译安装
+   (1) 下载依赖
+            $ sudo apt install git automake build-essential pkg-config libevent-dev libncurses5-dev
+   (2) 下载tmux源码,并编译安装:
+            $ git clone https://github.com/tmux/tmux.git
+            $ cd tmux
+            $ sh autogen.sh
+            $ ./configure && make
+            $ sudo make install
+
+2. 拷贝tmux配置文件
+   (1) 将 dev-conf/tmux/.tmux.conf 拷贝到 ~/ 目录, 在dev-conf目录下执行:
+            $ cp tmux/.tmux.conf ~/

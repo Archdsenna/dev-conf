@@ -13,9 +13,32 @@ Ubuntu安装zsh环境
                 $ git clone https://github.com/ohmyzsh/ohmyzsh.git
         (4.2) 执行install.sh
                 $ ohmyzsh/tools/install.sh
-   (4) 拷贝zsh配置文件.zshrc到~目录
+   (5) 拷贝zsh配置文件.zshrc到~目录
         先 clone dev-conf仓库
             $ git clone https://github.com/Archdsenna/dev-conf.git
         将dev-conf/zsh/linux/.zshrc直接拷贝到~/目录下即可
             $ cp .zshrc ~/
-   (5) 更新zsh配置: source .zshrc
+   (6) 更新zsh配置: 
+        $ source .zshrc
+   (7) 安装zsh第三方插件
+       (7.1) zsh-autosuggestions
+                $ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+       (7.2) zsh-syntax-highlighting
+                $ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/
+                $ source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh // 在.oh-my-zsh/custom/plugins目录下执行
+       (7.3) fzf-tab
+                $ git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+             (7.3.1) 安装fzf-tab的依赖: eza
+                        $ sudo apt update
+                        $ sudo apt install -y gpg
+                        $ sudo mkdir -p /etc/apt/keyrings
+                     复制公钥: https://raw.githubusercontent.com/eza-community/eza/main/deb.asc, 保存到 /etc/apt/keyrings/key.txt中
+                        $ sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg /etc/apt/keyrings/key.txt
+                        $ echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+                        $ sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+                        $ sudo apt update
+                        $ sudo apt install -y eza
+                
+   (8) 再次更新zsh配置: 
+        $ source .zshrc
+

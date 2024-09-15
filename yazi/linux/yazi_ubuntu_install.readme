@@ -1,0 +1,66 @@
+ubuntu安装yazi
+
+1. 安装yazi依赖:
+   (1) file
+       作用: 用于文件类型检测
+   (2) jq   
+       作用 : 用于 JSON 预览
+       方法 : 下载二进制文件, https://jqlang.github.io/jq/download/, 然后重命名为jq,mv到/usr/local/bin
+   (3) fd
+       作用 : 用于文件搜索
+       方法 : $ cargo install fd-find
+   (4) rg
+       作用 : 用于文件内容搜索
+       方法 : $ git clone https://github.com/BurntSushi/ripgrep
+              $ cd ripgrep
+              $ cargo build --release --features 'pcre2'
+              $ ./target/release/rg --version               " 查看编译结果
+              $ cp ./target/release/rg /usr/local/bin       " 将二进制拷贝到/usr/local/bin
+   (5) fzf
+       作用 : 用于快速文件子树导航
+       方法 : 见fzf_ubuntu_install.readme
+   (6) zoxide
+       作用 : 用于历史目录导航
+       方法 : 
+              (6.1) 先下载deb包: https://github.com/ajeetdsouza/zoxide/releases
+              (6.2) 使用apt命令安装deb包(从Ubuntu 16.04开始,apt的功能得到了增强,可以直接使用apt来安装本地的.deb文件。
+                    这样做的好处是apt会自动处理依赖问题),
+                        $ sudo apt install ./zoxide_0.9.5-1_arm64.deb
+                    [注]: 确保在文件名前加上./,表明这是一个路径,否则apt可能会尝试从软件仓库中查找该包
+   (7) xsel
+       作用 : 用于系统剪贴板支持
+       方法 : 采用源码编译方式,先安装编译工具
+              (7.1) 安装autoconf-2.69(用来生成configure)
+                      $ sudo apt-get install build-essential
+                      $ wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+                      $ tar xzf autoconf-2.69.tar.gz
+                      $ cd autoconf
+                      $ ./configure
+                      $ make
+                      $ sudo make install
+              (7.2) 安装pkg-config,autoconf-archive
+                      $ sudo apt install pkg-config  
+                      $ sudo apt-get install autoconf-archive
+                      $ sudo apt-get install libx11-dev
+              (7.3) 下载xsel源码并编译安装
+                      $ git clone https://github.com/kfish/xsel.git
+                      $ cd xsel
+                      $ autoreconf -fi
+                      $ ./configure
+                      $ make
+                      $ make check
+                      $ sudo make install
+          
+2. 安装yazi依赖
+   方式: 源码编译安装
+         $ git clone https://github.com/sxyazi/yazi.git
+         $ cd yazi
+         $ cargo build --release --locked
+         $ sudo cp ./target/release/yazi /usr/local/bin
+
+3. 拷贝yazi的配置文件
+    $ cp -r dev-conf/yazi/yazi ~/.config/
+
+
+                
+        

@@ -1,17 +1,43 @@
 新开发环境工具安装顺序:
-    1. ssh      : 如果是需要远程接入的机器(linux), 先在远程机器上安装ssh(server版),方法见ssh_install_linux.readme
-    2. fzf      : 见
-    3. zsh      : 
-    4. neovim   : 见nvim_linux(mac)_install.readme & nvim_checklist.readme
+    ⓪  ssh      : 如果是需要远程接入的机器(linux), 先在远程机器上安装ssh(server版),方法见ssh_install_linux.readme
+    ⓵  zsh      : 见zsh_ubuntu_install.readme
+                  (注: 拷贝.zshrc之后,先将cp与mv的alias语句注释掉,等advcpmv安装完后再恢复,避免无法使用系统的cp与mv命令)
+    ⓶  advcpmv  : 见dev-conf/tools/tools.readme -> Note: advcpmv安装方法
+    ⓷  fzf      : 见fzf_ubuntu_install.readme
+    ⓸  yazi     : 见yazi_ubuntu_install.readme
+    ⓹  tmux     : 见tmux_ubuntu_install.readme
+    ⓺  neovim   : 见nvim_linux_install.readme & nvim_checklist.readme
 
 
-    Ubuntu
-        |--ssh
-        |--fzf
-        |   |-- fzf工具
-        |   |-- fzf依赖
-        |--zsh
-            |-- zsh工具
-            |-- zsh第三方插件
-                    |--zsh第三方插件依赖
-        
+nvim   见nvim_linux_install.readme & nvim_checklist.readme
+  |--lua
+  |--python3 (nvim很多插件依赖python)
+  |--NodeJS(coc的依赖)
+
+                      ⓶ advcpmv
+安装顺序与依赖关系图谱:             |添加配置
+⓵ zsh --- ➊ ohmyzsh       |                                                ⓸ yazi
+ |       ↓ 生成           |           添加配置                                |
+ |     .zshrc ←-----------+--------------------------+                        |
+ |       ↑ 添加配置                                  |                        |
+ +--- ➋ 第三方插件                                   |                        |
+         |---zsh-autosuggestions                     |                        |
+         |---zsh-syntax-highlighting                 |                        |
+         |                                依赖       |          依赖          |
+         +---fzf-tab ---------------------------→ ⓷ fzf←----------------------+
+                |依赖                                +--bat
+                +---eza                              +--delta
+                           
+
+
+nvim---python3
+ |   |   ↓ 安装
+ |   |-pynvim
+coc  |-lua
+ |
+ |-----clangd
+ |-----NodeJS
+
+
+检查项
+1. 工具版本

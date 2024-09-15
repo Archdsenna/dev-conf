@@ -1,0 +1,19 @@
+Mac VMware Fusion 扩容 Ubuntu 磁盘
+
+扩容方法:
+1. 先设置扩容后的容量, VMware Fusion的设置选项在mac的顶部菜单栏可以找到: 
+        VMware Fusion: 虚拟机->设置->硬盘->磁盘大小, 拖动图标调整, 然后重启虚拟机应用修改
+2. 下载ubuntu图形界面扩容工具: 
+        $ sudo apt update
+        $ sudo apt-get install gparted
+3. 重新挂载根(主)分区为可读写(新创建的ubuntu虚拟机,根分区默认为read-only,导致gparted无法调整)
+        $ sudo umount /dev/nvme0n1p2                " nvme0n1p2为主分区名字,可用df -h命令查看当前主分区名
+        $ sudo mount -o remount,rw /dev/nvme0n1p2
+4. 使用gparted工具调整主分区容量
+   启动工具:
+        $ sudo gparted
+   进入gparted后, 先选中根分区名字,然后右键
+        例如: /dev/nvme0n1p2,
+   选择'调整大小/移动', 或者可以在界面拖拽至末尾,
+        [⚠️ ]Note: '对齐到' 选项要选择 'Mib', 否则会报错, 
+   最后点击最上面的✅(应用标记), 使修改生效
