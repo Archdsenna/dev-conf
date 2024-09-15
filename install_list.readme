@@ -6,21 +6,21 @@
     ⓷  fzf      : 见fzf_ubuntu_install.readme
     ⓸  yazi     : 见yazi_ubuntu_install.readme
     ⓹  tmux     : 见tmux_ubuntu_install.readme
-    ⓺  neovim   : 见nvim_linux_install.readme & nvim_checklist.readme
+    ⓺  neovim   : 见nvim_linux_install.readme 
 
 
-nvim   见nvim_linux_install.readme & nvim_checklist.readme
-  |--lua
-  |--python3 (nvim很多插件依赖python)
-  |--NodeJS(coc的依赖)
-
-                      ⓶ advcpmv
-安装顺序与依赖关系图谱:             |添加配置
-⓵ zsh --- ➊ ohmyzsh       |                                                ⓸ yazi
- |       ↓ 生成           |           添加配置                                |
- |     .zshrc ←-----------+--------------------------+                        |
+安装顺序与依赖关系图谱:                    
+                                              ⓺ nvim---------lua
+                                          添加配置|       |--python3 (nvim很多插件依赖python3)
+                                                  |       |--NodeJS(coc的依赖)
+                                                  |
+                      ⓶ advcpmv        ⓹ tmux     |
+                          |添加配置       |       |
+⓵ zsh --- ➊ ohmyzsh       |       添加配置|       |                        ⓸ yazi
+ |       ↓ 生成           |               |       |                           |
+ |     .zshrc ←-----------+---------------+-------+--+                        |
  |       ↑ 添加配置                                  |                        |
- +--- ➋ 第三方插件                                   |                        |
+ +--- ➋ 第三方插件                                   |添加配置                |
          |---zsh-autosuggestions                     |                        |
          |---zsh-syntax-highlighting                 |                        |
          |                                依赖       |          依赖          |
@@ -28,16 +28,3 @@ nvim   见nvim_linux_install.readme & nvim_checklist.readme
                 |依赖                                +--bat
                 +---eza                              +--delta
                            
-
-
-nvim---python3
- |   |   ↓ 安装
- |   |-pynvim
-coc  |-lua
- |
- |-----clangd
- |-----NodeJS
-
-
-检查项
-1. 工具版本
