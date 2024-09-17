@@ -322,7 +322,7 @@ alias bat='/usr/local/bin/bat'            # only for ubuntu
 alias fd='/usr/local/bin/fd'
 
 # alias python='/usr/bin/python3'         # only for mac, need to check
-# alias make='/opt/homebrew/bin/gmake'    # only for mac, need to check
+alias make='/usr/local/bin/make'
 
 # vim打开man页面
 function vim_man_open() {
