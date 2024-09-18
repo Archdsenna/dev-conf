@@ -6,10 +6,45 @@
     (2) 安装Node.js,clangd(mac通过安装llvm,ubuntu用apt)
     (3) 修改npm源为国内源,在~/.npmrc中添加:
         coc.nvim:registry=https://registry.npmmirror.com
-    (4) 安装语言的LSP, 及coc.nvim对该lsp的扩展:
-        例如C语言,可使用clangd作为语言服务器
-            $ sudo apt install clangd
-        安装coc.nvim的clangd扩展,vim执行
+    (4) 安装语言的LSP, 并在coc.nvim的配置文件中添加对应lsp的配置:
+        例如C语言,可使用ccls作为语言服务器(clangd和ccls的比较见: https://github.com/robottoy001/nvim_config/blob/master/docs/ccls-vs-clangd.md)
+        ccls安装方式如下:
+        ● ubuntu:源码编译安装
+            (4.1) 下载ccls源码
+                $ git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+                $ cd ccls
+            (4.2) 安装依赖
+                $ sudo apt install clang cmake libclang-dev llvm-dev rapidjson-dev libncurses5 zlib1g-dev
+            (4.3) 编译&安装
+                $ cmake -S. -BRelease -DCMAKE_BUILD_TYPE=Release \
+                        -DCMAKE_PREFIX_PATH=/usr/lib/llvm-14 \
+                        -DLLVM_INCLUDE_DIR=/usr/lib/llvm-14/include \
+                        -DLLVM_BUILD_INCLUDE_DIR=/usr/include/llvm-14/
+            (4.4) 安装
+                $ cmake --build Release --target install
+            (4.5) 配置coc.nvim
+                (4.5.1) 在vim中执行如下命令:
+                    :CocConfig
+                (4.5.2) 添加如下内容:
+                    {
+                      "languageserver": {
+                        "ccls": {
+                          "command": "ccls",
+                          "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+                          "rootPatterns": [".ccls-root", "compile_commands.json"],
+                          "initializationOptions": {
+                            "cache": {
+                              "directory": ".ccls-cache"
+                            },
+                            "client": {
+                              "snippetSupport": true
+                            }
+                          }
+                        }
+                      }
+                    }
+
+    (5) 安装coc.nvim的lsp扩展,例如C语言的clangd, 在vim执行
             :CocInstall coc-clangd
         coc支持的其他可用lsp扩展:
             coc-clangd          [已安装]
