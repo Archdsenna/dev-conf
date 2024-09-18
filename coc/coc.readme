@@ -6,7 +6,12 @@
     (2) 安装Node.js,clangd(mac通过安装llvm,ubuntu用apt)
     (3) 修改npm源为国内源,在~/.npmrc中添加:
         coc.nvim:registry=https://registry.npmmirror.com
-    (4) coc安装语言的LSP, 例如安装C语言的lsp, 执行:CocInstall coc-clangd
+    (4) 安装语言的LSP, 及coc.nvim对该lsp的扩展:
+        例如C语言,可使用clangd作为语言服务器
+            $ sudo apt install clangd
+        安装coc.nvim的clangd扩展,vim执行
+            :CocInstall coc-clangd
+        coc支持的其他可用lsp扩展:
             coc-clangd          [已安装]
             coc-json            [已安装]
             coc-go              [已安装]
