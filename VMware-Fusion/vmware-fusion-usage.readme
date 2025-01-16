@@ -1,8 +1,9 @@
 Mac VMware Fusion 扩容 Ubuntu 磁盘
 
-扩容方法:
+扩容方法:(先删除快照)
 1. 先设置扩容后的容量, VMware Fusion的设置选项在mac的顶部菜单栏可以找到: 
         VMware Fusion: 虚拟机->设置->硬盘->磁盘大小, 拖动图标调整, 然后重启虚拟机应用修改
+        [⚠️ ]Note: 虚拟机有快照时,无法拖动调整磁盘容量
 2. 下载ubuntu图形界面扩容工具: 
         $ sudo apt update
         $ sudo apt-get install gparted

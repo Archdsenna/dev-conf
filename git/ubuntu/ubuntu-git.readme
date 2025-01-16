@@ -1,0 +1,8 @@
+ubuntu安装最新版本的git:
+
+1. 添加Git PPA: 运行以下命令来添加Git的官方PPA到你的系统中,这将允许你安装最新版本的Git
+        $ sudo add-apt-repository ppa:git-core/ppa
+2. 更新软件包列表: 添加了PPA之后，需要更新你的软件包列表
+        $ sudo apt update
+3. 查看当前最新的版本:
+        $ sudo apt-cache policy git

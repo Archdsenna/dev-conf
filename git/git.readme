@@ -1,8 +1,9 @@
-ubuntu安装最新版本的git:
+Q: 如何将本地仓库上传到github?
+A:  (1) 先在github上新建仓库
+    (2) 初始化本地仓库: 
+            $ git init
+    (3) 关联远程仓库:
+            $ git remote add origin GITHUB-URL
+    (4) 推送本地仓库到github
+            $ git push -u origin master
 
-1. 添加Git PPA: 运行以下命令来添加Git的官方PPA到你的系统中,这将允许你安装最新版本的Git
-        $ sudo add-apt-repository ppa:git-core/ppa
-2. 更新软件包列表: 添加了PPA之后，需要更新你的软件包列表
-        $ sudo apt update
-3. 查看当前最新的版本:
-        $ sudo apt-cache policy git

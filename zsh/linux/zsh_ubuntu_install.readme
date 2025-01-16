@@ -24,7 +24,7 @@ Ubuntu安装zsh环境
        (7.1) zsh-autosuggestions
                 $ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
        (7.2) zsh-syntax-highlighting
-                $ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/
+                $ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
                 $ source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh // 在.oh-my-zsh/custom/plugins目录下执行
        (7.3) fzf-tab
                 $ git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
